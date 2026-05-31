@@ -6,10 +6,15 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 /**
- * Global Installer for Roo Commander
+ * Global Installer for Flow Orchestrator
  *
- * Installs Roo Commander mode globally in Roo Code's settings
- * Location: ~/.config/Code/User/globalStorage/rooveterinaryinc.roo-cline/settings/
+ * Installs Flow Orchestrator as a custom mode in the global settings of a
+ * supported VS Code editor. Flow Orchestrator works with any Roo-Code-compatible
+ * editor; the two supported targets share the same `custom_modes.yaml` format
+ * because Kilo Code is a fork of Roo Code:
+ *
+ *   - Roo Code  → globalStorage/rooveterinaryinc.roo-cline/settings/
+ *   - Kilo Code → globalStorage/kilocode.kilo-code/settings/
  */
 
 interface InstallResult {
@@ -17,179 +22,274 @@ interface InstallResult {
   error?: string;
 }
 
-/**
- * Get Roo Code global settings directory
- *
- * @returns Path to Roo Code global settings directory
- */
-export function getRooCodeSettingsDir(): string {
-  const platform = process.platform;
+/** A supported editor target. */
+export type EditorId = 'roo' | 'kilo';
 
-  let configDir: string;
+/** Static metadata describing how to locate an editor's config on disk. */
+export interface EditorInfo {
+  id: EditorId;
+  /** Human-readable name shown in CLI output. */
+  name: string;
+  /** VS Code extension id used as the globalStorage folder name. */
+  globalStorageId: string;
+  /** Global rules directory under the user's home (e.g. `.roo`, `.kilocode`). */
+  globalRulesDirName: string;
+  /** Project-level custom-modes file name (e.g. `.roomodes`, `.kilocodemodes`). */
+  projectModesFile: string;
+  /** Project-level config directory name (e.g. `.roo`, `.kilocode`). */
+  projectConfigDir: string;
+}
+
+/** The editors Flow Orchestrator can install into, in priority order. */
+export const SUPPORTED_EDITORS: Record<EditorId, EditorInfo> = {
+  roo: {
+    id: 'roo',
+    name: 'Roo Code',
+    globalStorageId: 'rooveterinaryinc.roo-cline',
+    globalRulesDirName: '.roo',
+    projectModesFile: '.roomodes',
+    projectConfigDir: '.roo',
+  },
+  kilo: {
+    id: 'kilo',
+    name: 'Kilo Code',
+    globalStorageId: 'kilocode.kilo-code',
+    globalRulesDirName: '.kilocode',
+    projectModesFile: '.kilocodemodes',
+    projectConfigDir: '.kilocode',
+  },
+};
+
+/**
+ * Get an editor's global settings directory for the current platform.
+ *
+ * @param editor Target editor (defaults to Roo Code for backward compatibility).
+ * @returns Absolute path to the editor's `settings/` directory.
+ */
+export function getEditorSettingsDir(editor: EditorInfo = SUPPORTED_EDITORS.roo): string {
+  const platform = process.platform;
+  const { globalStorageId } = editor;
+
   if (platform === 'win32') {
-    // Windows: %APPDATA%\Code\User\globalStorage\rooveterinaryinc.roo-cline
-    configDir = join(
+    // Windows: %APPDATA%\Code\User\globalStorage\<ext-id>\settings
+    return join(
       process.env.APPDATA || join(homedir(), 'AppData', 'Roaming'),
       'Code',
       'User',
       'globalStorage',
-      'rooveterinaryinc.roo-cline',
+      globalStorageId,
       'settings'
     );
   } else if (platform === 'darwin') {
-    // macOS: ~/Library/Application Support/Code/User/globalStorage/rooveterinaryinc.roo-cline
-    configDir = join(
+    // macOS: ~/Library/Application Support/Code/User/globalStorage/<ext-id>/settings
+    return join(
       homedir(),
       'Library',
       'Application Support',
       'Code',
       'User',
       'globalStorage',
-      'rooveterinaryinc.roo-cline',
-      'settings'
-    );
-  } else {
-    // Linux: ~/.config/Code/User/globalStorage/rooveterinaryinc.roo-cline
-    configDir = join(
-      homedir(),
-      '.config',
-      'Code',
-      'User',
-      'globalStorage',
-      'rooveterinaryinc.roo-cline',
+      globalStorageId,
       'settings'
     );
   }
 
-  return configDir;
+  // Linux: ~/.config/Code/User/globalStorage/<ext-id>/settings
+  return join(
+    homedir(),
+    '.config',
+    'Code',
+    'User',
+    'globalStorage',
+    globalStorageId,
+    'settings'
+  );
 }
 
 /**
- * Get global ~/.roo directory for custom instructions
+ * @deprecated Use {@link getEditorSettingsDir}. Kept for backward compatibility.
+ * @returns Path to Roo Code global settings directory
+ */
+export function getRooCodeSettingsDir(): string {
+  return getEditorSettingsDir(SUPPORTED_EDITORS.roo);
+}
+
+/**
+ * Detect every supported editor that has been installed and run at least once
+ * (its globalStorage settings directory exists).
  *
- * @returns Path to global .roo directory
+ * @returns List of detected editors (may be empty).
+ */
+export function detectInstalledEditors(): EditorInfo[] {
+  return Object.values(SUPPORTED_EDITORS).filter((editor) =>
+    existsSync(getEditorSettingsDir(editor))
+  );
+}
+
+/**
+ * Get an editor's global rules directory under the user's home.
+ *
+ * @param editor Target editor (defaults to Roo Code).
+ * @returns Path to e.g. `~/.roo` or `~/.kilocode`.
+ */
+export function getGlobalRulesDir(editor: EditorInfo = SUPPORTED_EDITORS.roo): string {
+  return join(homedir(), editor.globalRulesDirName);
+}
+
+/**
+ * @deprecated Use {@link getGlobalRulesDir}. Kept for backward compatibility.
  */
 export function getGlobalRooDir(): string {
-  return join(homedir(), '.roo');
+  return getGlobalRulesDir(SUPPORTED_EDITORS.roo);
 }
 
 /**
- * Install Roo Commander globally in Roo Code settings
+ * Read and parse the Flow Orchestrator mode entry from the template file.
  *
- * @param templatePath Path to .roomodes-entry.yaml template
- * @param force Force reinstall if already exists
- * @returns Install result
+ * @param templatePath Path to `.flow-orchestratormodes-entry.yaml`.
+ * @returns The parsed mode object, or an error result.
  */
-export async function installGlobalMode(templatePath: string, force: boolean = false): Promise<InstallResult> {
-  try {
-    const settingsDir = getRooCodeSettingsDir();
+function readModeEntry(
+  templatePath: string
+): { mode: any } | { error: string } {
+  if (!existsSync(templatePath)) {
+    return { error: `Template file not found: ${templatePath}` };
+  }
 
-    // Check if Roo Code settings directory exists
-    if (!existsSync(settingsDir)) {
-      return {
-        success: false,
-        error: `Roo Code settings directory not found at ${settingsDir}\n\nPlease install and run Roo Code extension at least once.`,
-      };
-    }
+  const templateContent = readFileSync(templatePath, 'utf-8');
+  const yamlStart = templateContent.indexOf('customModes:');
+  if (yamlStart === -1) {
+    return {
+      error: 'Invalid .flow-orchestratormodes-entry.yaml template (missing customModes key)',
+    };
+  }
 
-    // Read template file
-    if (!existsSync(templatePath)) {
-      return {
-        success: false,
-        error: `Template file not found: ${templatePath}`,
-      };
-    }
+  const parsedTemplate = yaml.parse(templateContent.substring(yamlStart));
+  if (!parsedTemplate?.customModes || !Array.isArray(parsedTemplate.customModes)) {
+    return {
+      error: 'Invalid .flow-orchestratormodes-entry.yaml template (customModes must be an array)',
+    };
+  }
 
-    const templateContent = readFileSync(templatePath, 'utf-8');
+  return { mode: parsedTemplate.customModes[0] };
+}
 
-    // Find YAML content (skip comments)
-    const yamlStart = templateContent.indexOf('customModes:');
-    if (yamlStart === -1) {
-      return {
-        success: false,
-        error: 'Invalid .roomodes-entry.yaml template (missing customModes key)',
-      };
-    }
+/**
+ * Install the Flow Orchestrator mode into a single editor's global settings.
+ *
+ * @param editor Target editor.
+ * @param flowOrchestratorMode The parsed mode entry to install.
+ * @param force Force reinstall if already present.
+ * @returns Install result.
+ */
+async function installModeForEditor(
+  editor: EditorInfo,
+  flowOrchestratorMode: any,
+  force: boolean
+): Promise<InstallResult> {
+  const settingsDir = getEditorSettingsDir(editor);
 
-    const yamlContent = templateContent.substring(yamlStart);
+  if (!existsSync(settingsDir)) {
+    return {
+      success: false,
+      error: `${editor.name} settings directory not found at ${settingsDir}`,
+    };
+  }
 
-    // Parse template
-    const parsedTemplate = yaml.parse(yamlContent);
-    if (!parsedTemplate?.customModes || !Array.isArray(parsedTemplate.customModes)) {
-      return {
-        success: false,
-        error: 'Invalid .roomodes-entry.yaml template (customModes must be an array)',
-      };
-    }
+  const yamlPath = join(settingsDir, 'custom_modes.yaml');
+  const jsonPath = join(settingsDir, 'custom_modes.json');
 
-    const rooCommanderMode = parsedTemplate.customModes[0];
+  let existingModes: any = { customModes: [] };
+  if (existsSync(yamlPath)) {
+    existingModes = yaml.parse(readFileSync(yamlPath, 'utf-8')) || { customModes: [] };
+  }
+  if (!existingModes.customModes) {
+    existingModes.customModes = [];
+  }
 
-    // Merge with existing custom_modes.yaml
-    const yamlPath = join(settingsDir, 'custom_modes.yaml');
-    const jsonPath = join(settingsDir, 'custom_modes.json');
+  const hasFlowOrchestrator = existingModes.customModes.some(
+    (mode: any) => mode.slug === 'flow-orchestrator'
+  );
 
-    let existingModes: any = { customModes: [] };
-
-    // Try reading YAML first (preferred format)
-    if (existsSync(yamlPath)) {
-      const yamlContent = readFileSync(yamlPath, 'utf-8');
-      existingModes = yaml.parse(yamlContent) || { customModes: [] };
-    }
-
-    // Ensure customModes array exists
-    if (!existingModes.customModes) {
-      existingModes.customModes = [];
-    }
-
-    // Check if Roo Commander already exists
-    const hasRooCommander = existingModes.customModes.some(
-      (mode: any) => mode.slug === 'roo-commander'
+  if (hasFlowOrchestrator && !force) {
+    console.log(
+      chalk.yellow(`\n⚠️  Flow Orchestrator is already installed in ${editor.name}`)
     );
+    const overrideAnswer = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'shouldOverride',
+        message: `Override existing ${editor.name} Flow Orchestrator configuration?`,
+        default: false,
+      },
+    ]);
 
-    if (hasRooCommander && !force) {
-      // Prompt user before overriding
-      console.log(chalk.yellow('\n⚠️  Roo Commander is already installed globally'));
+    if (!overrideAnswer.shouldOverride) {
+      console.log(
+        chalk.gray(`\nSkipping ${editor.name} mode update (existing configuration preserved)\n`)
+      );
+      return { success: true };
+    }
+  }
 
-      const overrideAnswer = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'shouldOverride',
-          message: 'Override existing global Roo Commander configuration?',
-          default: false,
-        },
-      ]);
+  if (hasFlowOrchestrator) {
+    existingModes.customModes = existingModes.customModes.filter(
+      (mode: any) => mode.slug !== 'flow-orchestrator'
+    );
+    existingModes.customModes.push(flowOrchestratorMode);
+    console.log(chalk.gray(`\n  Updated Flow Orchestrator entry in ${editor.name} settings`));
+  } else {
+    existingModes.customModes.push(flowOrchestratorMode);
+    console.log(chalk.gray(`\n  Added Flow Orchestrator entry to ${editor.name} settings`));
+  }
 
-      if (!overrideAnswer.shouldOverride) {
-        console.log(chalk.gray('\nSkipping global mode update (existing configuration preserved)\n'));
-        return { success: true };
+  writeFileSync(yamlPath, yaml.stringify(existingModes), 'utf-8');
+  writeFileSync(jsonPath, JSON.stringify(existingModes, null, 2), 'utf-8');
+  console.log(chalk.gray(`     Location: ${yamlPath}`));
+
+  return { success: true };
+}
+
+/**
+ * Install Flow Orchestrator globally in every detected editor (Roo Code and/or
+ * Kilo Code). If no supported editor is detected, returns an error.
+ *
+ * @param templatePath Path to .flow-orchestratormodes-entry.yaml template
+ * @param force Force reinstall if already exists
+ * @returns Install result (success if at least one editor was configured)
+ */
+export async function installGlobalMode(
+  templatePath: string,
+  force: boolean = false
+): Promise<InstallResult> {
+  try {
+    const entry = readModeEntry(templatePath);
+    if ('error' in entry) {
+      return { success: false, error: entry.error };
+    }
+
+    const editors = detectInstalledEditors();
+    if (editors.length === 0) {
+      return {
+        success: false,
+        error:
+          'No supported editor found.\n\n' +
+          'Install Roo Code or Kilo Code (VS Code extensions) and run it once,\n' +
+          'or use the --project flag for a project-scoped installation.',
+      };
+    }
+
+    const errors: string[] = [];
+    for (const editor of editors) {
+      const result = await installModeForEditor(editor, entry.mode, force);
+      if (!result.success && result.error) {
+        errors.push(result.error);
       }
     }
 
-    if (hasRooCommander) {
-      // Replace existing entry
-      existingModes.customModes = existingModes.customModes.filter(
-        (mode: any) => mode.slug !== 'roo-commander'
-      );
-      existingModes.customModes.push(rooCommanderMode);
-
-      console.log(
-        chalk.gray(`\n  Updated existing Roo Commander entry in global settings`)
-      );
-    } else {
-      // Append to existing
-      existingModes.customModes.push(rooCommanderMode);
-
-      console.log(chalk.gray(`\n  Added Roo Commander entry to global settings`));
+    if (errors.length === editors.length) {
+      return { success: false, error: errors.join('\n') };
     }
-
-    // Write both YAML and JSON (Roo Code uses both)
-    const newYamlContent = yaml.stringify(existingModes);
-    const newJsonContent = JSON.stringify(existingModes, null, 2);
-
-    writeFileSync(yamlPath, newYamlContent, 'utf-8');
-    writeFileSync(jsonPath, newJsonContent, 'utf-8');
-
-    console.log(chalk.gray(`     Location: ${yamlPath}`));
 
     return { success: true };
   } catch (error) {
@@ -201,38 +301,42 @@ export async function installGlobalMode(templatePath: string, force: boolean = f
 }
 
 /**
- * Install global custom instructions in ~/.roo/rules-roo-commander/
+ * Install global custom instructions into every detected editor's home rules
+ * directory (`~/.roo/rules-flow-orchestrator/` and/or
+ * `~/.kilocode/rules-flow-orchestrator/`).
  *
- * @param rulesDir Source rules directory (src/templates/rules-roo-commander)
+ * @param rulesDir Source rules directory (src/templates/rules-flow-orchestrator)
  * @param force Force reinstall
  * @returns Install result
  */
 export function installGlobalRules(rulesDir: string, force: boolean = false): InstallResult {
   try {
-    const globalRooDir = getGlobalRooDir();
-    const targetDir = join(globalRooDir, 'rules-roo-commander');
-
-    // Create ~/.roo directory if it doesn't exist
-    if (!existsSync(globalRooDir)) {
-      mkdirSync(globalRooDir, { recursive: true });
-      console.log(chalk.gray(`\n  Created ~/.roo directory`));
-    }
-
-    // Check if already installed
-    if (existsSync(targetDir) && !force) {
-      console.log(
-        chalk.yellow('\n  ⚠️  Global custom instructions already installed')
-      );
-      console.log(chalk.gray('     Use --force to reinstall\n'));
-      return { success: true };
-    }
-
-    // Copy rules directory
+    const editors = detectInstalledEditors();
+    // Fall back to Roo Code so existing behavior is preserved when nothing is detected.
+    const targets = editors.length > 0 ? editors : [SUPPORTED_EDITORS.roo];
     const fs = require('fs-extra');
-    fs.copySync(rulesDir, targetDir, { overwrite: force });
 
-    console.log(chalk.gray(`\n  Installed global custom instructions`));
-    console.log(chalk.gray(`     Location: ${targetDir}`));
+    for (const editor of targets) {
+      const globalDir = getGlobalRulesDir(editor);
+      const targetDir = join(globalDir, 'rules-flow-orchestrator');
+
+      if (!existsSync(globalDir)) {
+        mkdirSync(globalDir, { recursive: true });
+        console.log(chalk.gray(`\n  Created ${globalDir}`));
+      }
+
+      if (existsSync(targetDir) && !force) {
+        console.log(
+          chalk.yellow(`\n  ⚠️  ${editor.name} custom instructions already installed`)
+        );
+        console.log(chalk.gray('     Use --force to reinstall\n'));
+        continue;
+      }
+
+      fs.copySync(rulesDir, targetDir, { overwrite: force });
+      console.log(chalk.gray(`\n  Installed ${editor.name} custom instructions`));
+      console.log(chalk.gray(`     Location: ${targetDir}`));
+    }
 
     return { success: true };
   } catch (error) {
@@ -244,54 +348,43 @@ export function installGlobalRules(rulesDir: string, force: boolean = false): In
 }
 
 /**
- * Check if Roo Code extension is installed
+ * Check whether any supported editor (Roo Code or Kilo Code) is installed.
  *
- * @returns True if installed
+ * @returns True if at least one supported editor was detected.
  */
 export function isRooCodeInstalled(): boolean {
-  const settingsDir = getRooCodeSettingsDir();
-  return existsSync(settingsDir);
+  return detectInstalledEditors().length > 0;
 }
 
 /**
- * Check if Roo Commander is installed globally
+ * Check if Flow Orchestrator is installed globally in any supported editor.
  *
- * @returns True if Roo Commander mode exists in global settings
+ * @returns True if Flow Orchestrator mode exists in a global settings file.
  */
 export function isGloballyInstalled(): boolean {
-  try {
-    const settingsDir = getRooCodeSettingsDir();
+  return detectInstalledEditors().some((editor) => {
+    try {
+      const settingsDir = getEditorSettingsDir(editor);
+      const yamlPath = join(settingsDir, 'custom_modes.yaml');
+      const jsonPath = join(settingsDir, 'custom_modes.json');
 
-    if (!existsSync(settingsDir)) {
+      if (existsSync(yamlPath)) {
+        const parsed = yaml.parse(readFileSync(yamlPath, 'utf-8'));
+        if (parsed?.customModes && Array.isArray(parsed.customModes)) {
+          return parsed.customModes.some((mode: any) => mode.slug === 'flow-orchestrator');
+        }
+      }
+
+      if (existsSync(jsonPath)) {
+        const parsed = JSON.parse(readFileSync(jsonPath, 'utf-8'));
+        if (parsed?.customModes && Array.isArray(parsed.customModes)) {
+          return parsed.customModes.some((mode: any) => mode.slug === 'flow-orchestrator');
+        }
+      }
+
+      return false;
+    } catch {
       return false;
     }
-
-    // Check both YAML and JSON files
-    const yamlPath = join(settingsDir, 'custom_modes.yaml');
-    const jsonPath = join(settingsDir, 'custom_modes.json');
-
-    // Try YAML first
-    if (existsSync(yamlPath)) {
-      const content = readFileSync(yamlPath, 'utf-8');
-      const parsed = yaml.parse(content);
-
-      if (parsed?.customModes && Array.isArray(parsed.customModes)) {
-        return parsed.customModes.some((mode: any) => mode.slug === 'roo-commander');
-      }
-    }
-
-    // Fallback to JSON
-    if (existsSync(jsonPath)) {
-      const content = readFileSync(jsonPath, 'utf-8');
-      const parsed = JSON.parse(content);
-
-      if (parsed?.customModes && Array.isArray(parsed.customModes)) {
-        return parsed.customModes.some((mode: any) => mode.slug === 'roo-commander');
-      }
-    }
-
-    return false;
-  } catch {
-    return false;
-  }
+  });
 }

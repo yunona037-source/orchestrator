@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { cloneSkills, getDefaultSkillsDir, isValidSkillsDirectory, detectNestedSkills, fixNestedSkills, normalizeRepoUrl } from '../installer/github-cloner.js';
 import { installTemplates, isInstalled } from '../installer/template-installer.js';
-import { installGlobalMode, installGlobalRules, isRooCodeInstalled } from '../installer/global-installer.js';
+import { installGlobalMode, installGlobalRules, isRooCodeInstalled, detectInstalledEditors } from '../installer/global-installer.js';
 import { installClassic } from '../installer/classic-installer.js';
 import { generateSkillsIndex } from '../generator/index-generator.js';
 import { findAllSkills } from '../parser/skill-parser.js';
@@ -14,12 +14,12 @@ import { writeFileSync } from 'fs';
 /**
  * Init Command
  *
- * Initialize Roo Commander globally (default) or per-project:
+ * Initialize Flow Orchestrator globally (default) or per-project:
  *
  * Global Mode (default):
  * 1. Check for ~/.claude/skills/, prompt to clone if missing
  * 2. Install mode to Roo Code global settings (custom_modes.yaml)
- * 3. Copy rules to ~/.roo/rules-roo-commander/
+ * 3. Copy rules to ~/.roo/rules-flow-orchestrator/
  * 4. Mode appears in ALL projects
  *
  * Project Mode (--project flag):
@@ -50,7 +50,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   let { project = false } = options;
   let { classic = false } = options;
 
-  console.log(chalk.bold.cyan('\n👑 Roo Commander Initialization\n'));
+  console.log(chalk.bold.cyan('\n👑 Flow Orchestrator Initialization\n'));
 
   // Version selection: Modern (skills-integrated) vs Classic (MDTM)
   if (!options.hasOwnProperty('classic')) {
@@ -89,7 +89,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     });
 
     if (!result.success) {
-      console.error(chalk.red('\n❌ Failed to install Roo Commander Classic:'));
+      console.error(chalk.red('\n❌ Failed to install Flow Orchestrator Classic:'));
       for (const error of result.errors) {
         console.error(chalk.red(`  - ${error}`));
       }
@@ -110,7 +110,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       {
         type: 'list',
         name: 'installMode',
-        message: 'Where should Roo Commander be installed?',
+        message: 'Where should Flow Orchestrator be installed?',
         choices: [
           {
             name: 'Global (available in all projects)',
@@ -138,20 +138,21 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
   // Check if already installed (only for project mode)
   if (project && isInstalled(projectRoot) && !force) {
-    console.log(chalk.yellow('⚠️  Roo Commander is already installed in this project.'));
+    console.log(chalk.yellow('⚠️  Flow Orchestrator is already installed in this project.'));
     console.log(
       chalk.gray(
-        `\nRun ${chalk.cyan('roocommander init --project --force')} to reinstall.\n`
+        `\nRun ${chalk.cyan('flow-orch init --project --force')} to reinstall.\n`
       )
     );
     return;
   }
 
-  // For global mode, check if Roo Code is installed
+  // For global mode, check if a supported editor (Roo Code or Kilo Code) is installed
   if (!project && !isRooCodeInstalled()) {
-    console.error(chalk.red('\n❌ Roo Code extension not found\n'));
-    console.log(chalk.gray('  Roo Code must be installed and run at least once.\n'));
-    console.log(chalk.gray('  Install from: VS Code Extensions → Search "Roo Code"\n'));
+    console.error(chalk.red('\n❌ No supported editor found\n'));
+    console.log(chalk.gray('  Flow Orchestrator works with Roo Code or Kilo Code in VS Code.\n'));
+    console.log(chalk.gray('  Install one of them and run it once, then try again:'));
+    console.log(chalk.gray('    VS Code Extensions → search "Roo Code" or "Kilo Code"\n'));
     console.log(chalk.gray('  Alternative: Use --project flag for project-scoped installation\n'));
     process.exit(1);
   }
@@ -279,7 +280,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       console.log(chalk.green(`\n✅ Using skills directory: ${chalk.cyan(skillsDir)}\n`));
     } else {
       console.log(chalk.yellow('\n⚠️  Skipping skills setup.'));
-      console.log(chalk.white(`You can set up skills later by running: ${chalk.cyan('roocommander init')}\n`));
+      console.log(chalk.white(`You can set up skills later by running: ${chalk.cyan('flow-orch init')}\n`));
     }
   } else {
     // No existing skills found
@@ -354,21 +355,21 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       console.log(chalk.green(`\n✅ Using skills directory: ${chalk.cyan(skillsDir)}\n`));
     } else {
       console.log(chalk.yellow('\n⚠️  Skipping skills setup.'));
-      console.log(chalk.white(`You can set up skills later by running: ${chalk.cyan('roocommander init')}\n`));
+      console.log(chalk.white(`You can set up skills later by running: ${chalk.cyan('flow-orch init')}\n`));
     }
   }
 
   // GLOBAL MODE: Install to Roo Code settings
   if (!project) {
     // Step 2: Install global mode
-    console.log(chalk.bold('Step 2: Installing Roo Commander Mode\n'));
+    console.log(chalk.bold('Step 2: Installing Flow Orchestrator Mode\n'));
 
-    const modeSpinner = ora('Installing to Roo Code settings...').start();
+    const modeSpinner = ora('Installing into your editor settings (Roo Code / Kilo Code)...').start();
 
     // Template path: dist/commands -> ../../src/templates (during dev) or ../templates (production)
-    const templatePath = existsSync(join(__dirname, '../../src/templates/.roomodes-entry.yaml'))
-      ? join(__dirname, '../../src/templates/.roomodes-entry.yaml')
-      : join(__dirname, '../templates/.roomodes-entry.yaml');
+    const templatePath = existsSync(join(__dirname, '../../src/templates/.flow-orchestratormodes-entry.yaml'))
+      ? join(__dirname, '../../src/templates/.flow-orchestratormodes-entry.yaml')
+      : join(__dirname, '../templates/.flow-orchestratormodes-entry.yaml');
 
     modeSpinner.stop();
     const modeResult = await installGlobalMode(templatePath, force);
@@ -379,17 +380,17 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       process.exit(1);
     }
 
-    console.log(chalk.green('✅ Installed mode to Roo Code settings\n'));
+    console.log(chalk.green('✅ Installed mode into your editor settings (Roo Code / Kilo Code)\n'));
 
     // Step 3: Install global rules
     console.log(chalk.bold('Step 3: Installing Custom Instructions\n'));
 
-    const rulesSpinner = ora('Copying rules to ~/.roo/...').start();
+    const rulesSpinner = ora('Copying rules to your editor home directory...').start();
 
     // Rules path: dist/commands -> ../../src/templates (during dev) or ../templates (production)
-    const rulesSourceDir = existsSync(join(__dirname, '../../src/templates/rules-roo-commander'))
-      ? join(__dirname, '../../src/templates/rules-roo-commander')
-      : join(__dirname, '../templates/rules-roo-commander');
+    const rulesSourceDir = existsSync(join(__dirname, '../../src/templates/rules-flow-orchestrator'))
+      ? join(__dirname, '../../src/templates/rules-flow-orchestrator')
+      : join(__dirname, '../templates/rules-flow-orchestrator');
     const rulesResult = installGlobalRules(rulesSourceDir, force);
 
     if (!rulesResult.success) {
@@ -398,7 +399,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       process.exit(1);
     }
 
-    rulesSpinner.succeed(chalk.green('✅ Installed custom instructions to ~/.roo/\n'));
+    rulesSpinner.succeed(chalk.green('✅ Installed custom instructions to your editor home directory\n'));
   }
   // PROJECT MODE: Install to project directory
   else {
@@ -493,61 +494,61 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   }
 
   // Step 5: Success message with next steps
-  console.log(chalk.bold.green('\n🎉 Roo Commander Initialization Complete!\n'));
+  console.log(chalk.bold.green('\n🎉 Flow Orchestrator Initialization Complete!\n'));
 
   if (!project) {
     // Global installation success message
     console.log(chalk.bold('What was installed:\n'));
-    console.log(chalk.gray('  ✅ Roo Commander mode (available in ALL projects)'));
-    console.log(chalk.gray('  ✅ Custom instructions (~/.roo/rules-roo-commander/)'));
+    console.log(chalk.gray('  ✅ Flow Orchestrator mode (available in ALL projects)'));
+    console.log(chalk.gray('  ✅ Custom instructions (in your editor home directory)'));
 
     console.log(chalk.bold('\n⚠️  IMPORTANT:\n'));
-    console.log(chalk.yellow('  Reload VS Code to see Roo Commander in the mode selector'));
+    console.log(chalk.yellow('  Reload VS Code to see Flow Orchestrator in the mode selector'));
     console.log(chalk.gray('  Command Palette (Cmd/Ctrl+Shift+P) → "Developer: Reload Window"\n'));
 
     console.log(chalk.bold('📖 Next Steps:\n'));
     console.log(chalk.cyan('  1. Reload VS Code (required for mode to appear)'));
     console.log(chalk.gray('     Cmd/Ctrl+Shift+P → Developer: Reload Window\n'));
 
-    console.log(chalk.cyan('  2. Open any project and switch to Roo Commander:'));
-    console.log(chalk.gray('     /mode roo-commander\n'));
+    console.log(chalk.cyan('  2. Open any project and switch to Flow Orchestrator:'));
+    console.log(chalk.gray('     /mode flow-orchestrator\n'));
 
     console.log(chalk.cyan('  3. List available skills:'));
-    console.log(chalk.gray('     roocommander list\n'));
+    console.log(chalk.gray('     flow-orch list\n'));
 
     console.log(chalk.cyan('  4. Load a skill before implementing:'));
-    console.log(chalk.gray('     roocommander read "Cloudflare D1 Database"\n'));
+    console.log(chalk.gray('     flow-orch read "Cloudflare D1 Database"\n'));
 
     console.log(chalk.bold('🔗 Resources:\n'));
-    console.log(chalk.gray('  Mode config: ~/.config/Code/User/globalStorage/.../custom_modes.yaml'));
-    console.log(chalk.gray('  Custom instructions: ~/.roo/rules-roo-commander/'));
+    console.log(chalk.gray('  Mode config: your editor\'s globalStorage/.../custom_modes.yaml'));
+    console.log(chalk.gray('  Custom instructions: ~/.roo/ or ~/.kilocode/rules-flow-orchestrator/'));
   } else {
     // Project installation success message
     console.log(chalk.bold('What was installed:\n'));
     console.log(chalk.gray(`  ✅ Skills index (${(await findAllSkills(skillsDir, { validate: false })).length} skills available)`));
-    console.log(chalk.gray('  ✅ CLI usage templates (how to use roo-commander)'));
+    console.log(chalk.gray('  ✅ CLI usage templates (how to use flow-orchestrator)'));
     console.log(chalk.gray('  ✅ Skill patterns guide (when to check skills)'));
-    console.log(chalk.gray('  ✅ Roo Commander mode configuration'));
+    console.log(chalk.gray('  ✅ Flow Orchestrator mode configuration'));
     console.log(chalk.gray('  ✅ 9 slash commands (session management, planning, release)'));
 
     console.log(chalk.bold('\n⚠️  IMPORTANT:\n'));
-    console.log(chalk.yellow('  Reload VS Code to see Roo Commander in the mode selector'));
+    console.log(chalk.yellow('  Reload VS Code to see Flow Orchestrator in the mode selector'));
     console.log(chalk.gray('  Command Palette (Cmd/Ctrl+Shift+P) → "Developer: Reload Window"\n'));
 
     console.log(chalk.bold('📖 Next Steps:\n'));
     console.log(chalk.cyan('  1. Reload VS Code (required for mode to appear)'));
     console.log(chalk.gray('     Cmd/Ctrl+Shift+P → Developer: Reload Window\n'));
 
-    console.log(chalk.cyan('  2. Switch to Roo Commander mode:'));
-    console.log(chalk.gray('     /mode roo-commander\n'));
+    console.log(chalk.cyan('  2. Switch to Flow Orchestrator mode:'));
+    console.log(chalk.gray('     /mode flow-orchestrator\n'));
 
     console.log(chalk.cyan('  3. List available skills:'));
     console.log(chalk.gray('     /list-skills'));
-    console.log(chalk.gray('     or: roocommander list\n'));
+    console.log(chalk.gray('     or: flow-orch list\n'));
 
     console.log(chalk.cyan('  4. Load a skill before implementing:'));
     console.log(chalk.gray('     /load-skill "Cloudflare D1 Database"'));
-    console.log(chalk.gray('     or: roocommander read "Cloudflare D1 Database"\n'));
+    console.log(chalk.gray('     or: flow-orch read "Cloudflare D1 Database"\n'));
 
     console.log(chalk.cyan('  5. Start project planning:'));
     console.log(chalk.gray('     /plan-project\n'));
@@ -567,7 +568,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       chalk.gray(`\n  Commands: ${chalk.cyan('.roo/commands/')} (9 slash commands)`)
     );
     console.log(
-      chalk.gray(`  Mode config: ${chalk.cyan('.roomodes')} (Roo Commander entry)`)
+      chalk.gray(`  Mode config: ${chalk.cyan('.roomodes')} (Flow Orchestrator entry)`)
     );
   }
 

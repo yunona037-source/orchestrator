@@ -1,437 +1,88 @@
-# Roo Commander v9.0.0
+# Flow Orchestrator
 
-> Bridge your Claude Code skills to Roo Code with intelligent orchestration
+Flow Orchestrator is a helper for your AI coding assistant. It teaches your assistant to use ready-made guides called skills. A skill is a short, tested recipe for one coding job. You keep these recipes in one place and reuse them.
 
-**Roo Commander** is a three-component system that brings Claude Code's 60+ production-tested skills to Roo Code VS Code extension through a CLI tool, custom instructions, and an orchestrator mode.
+This project is a fork. A fork is a fresh copy of an older project that goes its own way. We renamed it and gave it a cleaner job. The older project linked coding guides to an AI editor tool. Flow Orchestrator keeps that idea and makes it simpler to use.
 
----
+The goal is plain and small. Your assistant should check for a known recipe before it guesses. Good recipes save time, money, and mistakes. That is the whole point.
 
-## 🎯 What It Does
+## What It Does
 
-Roo Commander makes your Roo Code AI agent **skill-aware**:
+Flow Orchestrator makes your AI coding assistant "skill-aware". Skill-aware means it knows which recipes exist and when to use them.
 
-1. **Automatic Skill Discovery** - Before implementing features, checks if relevant skills exist
-2. **CLI Integration** - List, search, and load skills directly from Roo Code
-3. **Orchestrator Mode** - Lightweight mode that delegates to Code/Architect/Debug with skill context
-4. **Session Management** - Track progress through phases with /wrap-session and /continue-session
-5. **Project Planning** - Generate IMPLEMENTATION_PHASES.md with /plan-project
+Here is what it gives you, in plain words:
 
-**Why?** Skills contain production-tested patterns, known issue prevention, and token-efficient documentation. Using skills saves 60-87% tokens vs web search + trial-and-error.
+- Finds the right recipe. Before writing code, it checks if a matching skill exists.
+- Lets you browse recipes. You can list, search, and read skills from the command line.
+- Adds a planning mode. A mode is a way your assistant behaves. This mode plans work and hands jobs to other modes.
+- Tracks your progress. It saves where you stopped so you can pick up later.
 
----
+A command line is a text window where you type commands instead of clicking buttons. Do not worry if it feels new. The steps below tell you exactly what to type.
 
-## 🚀 Quick Start
+## Who It's For
 
-### 1. Install CLI
+This tool is for people who code with an AI assistant and want better results.
 
-```bash
-npm install -g roocommander
-```
+You will like Flow Orchestrator if:
 
-### 2. Install Roo Commander Mode
+- You use Roo Code or Kilo Code, two AI coding helpers for the VS Code editor, and want them to follow proven patterns.
+- You are new to AI coding and want safe, tested guidance instead of random answers.
+- You build apps and reuse the same setups, like a database or a login screen.
+- You want your assistant to plan first and then do the work in small, clear steps.
 
-**Global Installation (Recommended)**
-```bash
-roocommander init
-```
+You do not need to be an expert. If you can open a terminal and copy a command, you can use this.
 
-This installs Roo Commander globally - available in **ALL your projects**:
-- Writes to `~/.config/Code/.../custom_modes.yaml`
-- Copies rules to `~/.roo/rules-roo-commander/`
-- 👑 Crown emoji indicates the mode
+## How To Start
 
-**Project-Scoped Installation** (Optional)
-```bash
-cd your-project
-roocommander init --project
-```
+Getting started takes two short stages. First you install the tool. Then you run it the first time. Follow the numbered steps in order.
 
-This installs only in the current project:
-- `.roo/rules/` - Custom instructions (skills index, CLI usage, patterns)
-- `.roo/rules-roo-commander/` - Mode-specific rules
-- `.roo/commands/` - 9 slash commands
-- `.roomodes` - Roo Commander mode entry
+### Install The Tool
 
-**⚠️ Important**: After running `roocommander init`, **reload VS Code** (Command Palette → "Developer: Reload Window") to see 👑 Roo Commander in the mode selector.
+1. Open a terminal. A terminal is the text window where you type commands.
+2. Type `npm install -g flow-orchestrator` and press Enter. This installs the tool for every project.
+3. Wait until the install finishes and the terminal is ready again.
+4. Type `flow-orch list` and press Enter to check that it works.
 
-### 3. Use Roo Commander
+### Run It The First Time
 
-In Roo Code:
+1. Open the folder of the project you want to work on.
+2. Type `flow-orch init` and press Enter. This sets up the tool inside your editor.
+3. Reload your editor window so it can see the new mode.
+4. Pick the `flow-orchestrator` mode in your editor and ask it for help.
 
-```
-/mode roo-commander
+That is it. Your assistant can now find and use skills while it helps you build.
 
-"I want to build a chat interface with OpenAI and save conversations to D1"
+## Commands You Can Use
 
-// Roo Commander will:
-// 1. Check skills index for "chat", "openai", "d1"
-// 2. Find: ai-sdk-ui, openai-api, cloudflare-d1
-// 3. Delegate to Code mode with skill loading instructions
-```
-
----
-
-## 📦 What's Included
-
-### CLI Commands
+These are the main commands. Run them in your terminal after the install.
 
 ```bash
-roocommander list              # Show all 60+ skills
-roocommander search ai         # Search by keyword
-roocommander read "skill-name" # Load skill content
-roocommander generate-index    # Create skills index
-roocommander init              # Set up Roo Commander
+flow-orch list              # Show all the skills you have
+flow-orch search ai         # Find skills by a keyword
+flow-orch read "skill-name" # Print one skill so you can read it
+flow-orch generate-index    # Build a list of all skills
+flow-orch init              # Set up Flow Orchestrator in a project
 ```
 
-### Slash Commands (9 total)
+Each command does one small job. You can mix and match them as you work.
 
-**Session Management**:
-- `/wrap-session` - Save progress, create git checkpoint
-- `/continue-session` - Resume from SESSION.md
-- `/list-skills` - Browse available skills
-- `/load-skill <name>` - Load specific skill
+## What Are Skills
 
-**Planning**:
-- `/explore-idea` - Research and validate project idea
-- `/plan-project` - Create IMPLEMENTATION_PHASES.md
-- `/plan-feature` - Add feature to existing project
+A skill is a small guide that solves one coding task the right way. Think of it like a recipe card for cooking. It has tested steps, common mistakes to avoid, and short notes. Using a skill is faster and safer than searching the web and guessing.
 
-**Release**:
-- `/github-release <version>` - Create GitHub release
-- `/release <version>` - Complete release checklist
+Flow Orchestrator ships with many skills for popular tools. They cover areas like AI models, cloud services, web front ends, and logins. You can also point the tool at your own folder of skills.
 
-### Roo Commander Mode
+## Where To Learn More
 
-Lightweight orchestrator that:
-- Analyzes user requests
-- Checks `.roo/rules/01-skills-index.md` for relevant skills
-- Delegates to Code/Architect/Debug modes with skill instructions
-- Tracks completion
+- [Architecture](docs/ARCHITECTURE.md) explains how the parts fit together.
+- [Implementation Phases](docs/IMPLEMENTATION_PHASES.md) shows the build plan.
+- [Project Brief](docs/PROJECT_BRIEF.md) gives the short story of the project.
+- [Changelog](CHANGELOG.md) lists what changed in each version.
 
-**When to use**:
-- Starting new features (auto skill discovery)
-- Complex multi-step workflows
-- Unsure which skill to use
+## License
 
-**When to bypass**:
-- Simple edits (use Code mode directly)
-- Already know which skill (load it manually)
+MIT
 
 ---
 
-## 💡 Example Workflows
-
-### Workflow 1: New Cloudflare Workers Project
-
-```
-/mode roo-commander
-
-"Set up a new Cloudflare Workers project with D1 database and Tailwind v4"
-
-// Roo Commander response:
-Found 3 relevant skills:
-• cloudflare-worker-base: Project scaffolding
-• cloudflare-d1: Database setup
-• Tailwind v4 + shadcn/ui Stack: Frontend styling
-
-Delegating to Code mode with instructions to load these skills...
-
-[Code mode receives message]:
-Task: Scaffold Cloudflare Workers project with D1 and Tailwind v4
-
-Skills to use:
-- Run: `roocommander read "cloudflare-worker-base"`
-- Run: `roocommander read "Cloudflare D1 Database"`
-- Run: `roocommander read "Tailwind v4 + shadcn/ui Stack"`
-
-[Implementation follows skill patterns]
-```
-
-### Workflow 2: Adding Authentication
-
-```
-/mode code  // Already in Code mode
-
-// Load skill before implementing
-/load-skill clerk-auth
-
-"Add Clerk authentication with session storage in D1"
-
-[Code mode uses skill patterns to implement correctly]
-```
-
-### Workflow 3: Project Planning
-
-```
-/plan-project
-
-// Guided workflow:
-Project name: Task Manager
-Tech stack: React, Cloudflare Workers, D1
-Features: User auth, task CRUD, filtering
-
-// Creates:
-• docs/IMPLEMENTATION_PHASES.md (8 phases, 20-24 hours)
-• SESSION.md (session tracking)
-
-// Start Phase 1
-[Load relevant skills and begin implementation]
-```
-
----
-
-## 🏗️ Architecture
-
-**Three-Component System**:
-
-```
-┌─────────────────────────────────────────────────────┐
-│ 1. CLI Tool (roocommander)                         │
-│    - List/search/read skills                        │
-│    - Generate skills index                          │
-│    - Initialize project                             │
-└─────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────┐
-│ 2. Custom Instructions (.roo/rules/)               │
-│    - 01-skills-index.md (categorized skills)        │
-│    - 02-cli-usage.md (CLI command reference)        │
-│    - 03-skill-patterns.md (when to check skills)    │
-│    - 9 slash commands (.roo/commands/)              │
-└─────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────┐
-│ 3. Roo Commander Mode (.roomodes entry)            │
-│    - Orchestrates skill discovery                   │
-│    - Delegates to Code/Architect/Debug              │
-│    - Workflow tools only (no file access)           │
-└─────────────────────────────────────────────────────┘
-```
-
-See `docs/ARCHITECTURE.md` for complete system design and data flow diagrams.
-
----
-
-## 📚 Documentation
-
-- **[CLI Reference](docs/CLI_REFERENCE.md)** - Complete command documentation
-- **[Architecture](docs/ARCHITECTURE.md)** - System design and data flow
-- **[Marketplace Guide](docs/MARKETPLACE.md)** - Packaging and submission
-- **[Changelog](CHANGELOG.md)** - Version history
-
----
-
-## 🎨 Skills Available
-
-**60+ Production-Tested Skills** organized by category:
-
-### 🤖 AI & LLM Integration (29 skills)
-OpenAI, Claude, Gemini, Vercel AI SDK, ElevenLabs agents, chatbots
-
-### ☁️ Cloudflare Platform (15 skills)
-Workers, D1, R2, KV, Durable Objects, Workflows, AI, Vectorize, Queues
-
-### ⚛️ Frontend Stack (11 skills)
-React, Next.js, Tailwind v4, shadcn/ui, TanStack Query/Router/Table, Zustand
-
-### 🔐 Authentication (3 skills)
-Clerk, Better Auth, Auth.js
-
-### 📝 Forms & Validation (2 skills)
-React Hook Form + Zod patterns
-
-### 📊 Data & Scraping (3 skills)
-Drizzle ORM, Firecrawl, WordPress plugins
-
-### 📄 Content Management (3 skills)
-TinaCMS, Sveltia CMS, Content Collections
-
-### 📋 Project Planning (1 skill)
-IMPLEMENTATION_PHASES.md generation
-
-See `.roo/rules/01-skills-index.md` for complete list with descriptions and keywords.
-
----
-
-## 🔧 CLI Reference
-
-### list
-
-Show all available skills.
-
-```bash
-roocommander list              # Compact list
-roocommander list --verbose    # With descriptions
-roocommander list --source ~/custom/skills  # Custom directory
-```
-
-**Output**: Table of skill names, descriptions, keywords
-
-### search
-
-Find skills by keyword.
-
-```bash
-roocommander search database
-roocommander search cloudflare
-roocommander search auth --verbose
-```
-
-**Scoring**: Name match > keyword match > description match
-
-### read
-
-Output skill content.
-
-```bash
-roocommander read "Cloudflare D1 Database"
-roocommander read clerk-auth --raw  # Plain markdown
-```
-
-**Fuzzy matching**: "cloudflare d1" matches "Cloudflare D1 Database"
-
-### generate-index
-
-Create categorized skills index.
-
-```bash
-roocommander generate-index
-roocommander generate-index --output custom/path.md
-```
-
-**Output**: `.roo/rules/01-skills-index.md` with 7 categories
-
-### init
-
-Initialize Roo Commander in project.
-
-```bash
-roocommander init              # Interactive setup
-roocommander init --force      # Reinstall
-roocommander init --source ~/custom/skills  # Custom directory
-```
-
-**Creates**: Complete `.roo/` structure, skills index, .roomodes entry
-
-See `docs/CLI_REFERENCE.md` for complete documentation.
-
----
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-
-**CLI Commands**:
-- [ ] `roocommander list` shows skills
-- [ ] `roocommander search cloudflare` finds 15 skills
-- [ ] `roocommander read "Cloudflare D1 Database"` outputs content
-- [ ] `roocommander generate-index` creates index file
-- [ ] `roocommander init` sets up project
-
-**Slash Commands** (in Roo Code):
-- [ ] `/list-skills` runs CLI and formats output
-- [ ] `/load-skill "clerk-auth"` loads skill content
-- [ ] `/wrap-session` creates git checkpoint
-- [ ] `/continue-session` resumes from SESSION.md
-- [ ] `/plan-project` generates IMPLEMENTATION_PHASES.md
-
-**Roo Commander Mode**:
-- [ ] Mode appears in `/mode` list
-- [ ] Skill routing works (user mentions "database" → suggests D1/KV/R2)
-- [ ] Delegation includes skill loading commands
-- [ ] Completion tracking works
-
----
-
-## 🛠️ Development
-
-### Setup
-
-```bash
-git clone https://github.com/jezweb/roo-commander.git
-cd roo-commander
-npm install
-npm run build
-npm link  # Test globally
-```
-
-### Project Structure
-
-```
-roo-commander/
-├── src/
-│   ├── commands/         # CLI command handlers
-│   │   ├── list.ts
-│   │   ├── read.ts
-│   │   ├── search.ts
-│   │   ├── generate-index.ts
-│   │   ├── sync-index.ts
-│   │   └── init.ts
-│   ├── parser/           # Skill YAML parsing
-│   │   └── skill-parser.ts
-│   ├── generator/        # Index generation
-│   │   └── index-generator.ts
-│   ├── installer/        # Template installation
-│   │   ├── github-cloner.ts
-│   │   └── template-installer.ts
-│   ├── templates/        # Template files
-│   │   ├── .roomodes-entry.yaml
-│   │   ├── rules/        # 02-cli-usage.md, 03-skill-patterns.md
-│   │   ├── rules-roo-commander/  # Mode rules (3 files)
-│   │   └── commands/     # Slash commands (9 files)
-│   ├── types.ts          # TypeScript types
-│   ├── cli.ts            # CLI entry point
-│   └── index.ts          # Package entry
-├── docs/                 # Documentation
-├── package.json
-└── tsconfig.json
-```
-
----
-
-## 📝 License
-
-MIT © 2025 Jeremy Dawes / Jezweb
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes
-4. Add tests if applicable
-5. Submit PR with description
-
----
-
-## 🔗 Links
-
-- **GitHub**: https://github.com/jezweb/roo-commander
-- **npm**: https://www.npmjs.com/package/roocommander
-- **Skills Repository**: https://github.com/jezweb/claude-skills
-- **Roo Code**: [VS Code Extension]
-- **Claude Code**: https://docs.claude.com/claude-code
-
----
-
-## 📞 Support
-
-- **Issues**: https://github.com/jezweb/roo-commander/issues
-- **Discussions**: https://github.com/jezweb/roo-commander/discussions
-- **Email**: jeremy@jezweb.net
-
----
-
-## 🎉 Acknowledgments
-
-- **Anthropic** - Claude Code and skills ecosystem
-- **Roo Code Team** - VS Code extension
-- **Jezweb Skills** - 60+ production-tested skills
-
----
-
-**Version**: 9.2.0 (Workflow orchestration awareness - proactive lifecycle guidance)
-**Last Updated**: 2025-11-13
+<sub>A fork of [@jezweb/roo-commander](https://github.com/jezweb/roo-commander).</sub>

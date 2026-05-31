@@ -1,18 +1,20 @@
 {
-  "name": "roocommander",
+  "name": "flow-orchestrator",
   "version": "9.5.0",
-  "description": "Bridge Claude Code skills to Roo Code with intelligent orchestration. CLI tool + Custom Mode + 60+ production-tested skills for Cloudflare, AI, Frontend development.",
+  "description": "Flow Orchestrator: a CLI tool and orchestrator mode that brings 60+ production-tested skills to your AI coding workflow in Roo Code and Kilo Code for Cloudflare, AI, and frontend development.",
   "main": "dist/index.js",
   "bin": {
-    "roocommander": "./dist/index.js"
+    "flow-orch": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest --run"
   },
   "keywords": [
+    "flow-orchestrator",
     "roo-code",
+    "kilo-code",
     "claude-code",
     "skills",
     "cli",
@@ -31,19 +33,19 @@
     "ai-assistant",
     "code-generation"
   ],
-  "author": "Jeremy Dawes <jeremy@jezweb.net>",
+  "author": "yunona037-source",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jezweb/roo-commander.git"
+    "url": "https://github.com/yunona037-source/orchestrator.git"
   },
   "bugs": {
-    "url": "https://github.com/jezweb/roo-commander/issues"
+    "url": "https://github.com/yunona037-source/orchestrator/issues"
   },
-  "homepage": "https://github.com/jezweb/roo-commander#readme",
+  "homepage": "https://github.com/yunona037-source/orchestrator#readme",
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
@@ -57,6 +59,8 @@
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.0",
     "@types/node": "^22.10.2",
-    "typescript": "^5.7.2"
+    "fast-check": "^4.8.0",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.7"
   }
 }

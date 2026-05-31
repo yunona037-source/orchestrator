@@ -1,6 +1,6 @@
-# Roo Commander CLI Usage
+# Flow Orchestrator CLI Usage
 
-> Command-line tool for accessing Claude Code skills in Roo Code
+> Command-line tool for using reusable coding skills inside Roo Code and Kilo Code
 
 Available commands: `list`, `read`, `search`, `generate-index`, `sync-index`, `init`
 
@@ -11,11 +11,11 @@ Available commands: `list`, `read`, `search`, `generate-index`, `sync-index`, `i
 Before using CLI commands, verify installation:
 
 ```bash
-# Check if roocommander is installed
-which roocommander
+# Check if flow-orchestrator is installed
+which flow-orchestrator
 
 # If not installed, inform user to install
-npm install -g @jezweb/roocommander
+npm install -g flow-orchestrator
 ```
 
 **Skills directory locations:**
@@ -32,9 +32,9 @@ npm install -g @jezweb/roocommander
 
 **Syntax**:
 ```bash
-roocommander list
-roocommander list --verbose
-roocommander list --source ~/custom/skills
+flow-orch list
+flow-orch list --verbose
+flow-orch list --source ~/custom/skills
 ```
 
 **Options**:
@@ -62,9 +62,9 @@ Source: /home/user/.claude/skills
 
 **Syntax**:
 ```bash
-roocommander read <skill-name>
-roocommander read "Cloudflare D1 Database"
-roocommander read cloudflare-d1 --raw
+flow-orch read <skill-name>
+flow-orch read "Cloudflare D1 Database"
+flow-orch read cloudflare-d1 --raw
 ```
 
 **Options**:
@@ -103,10 +103,10 @@ Templates: N files
 
 **Syntax**:
 ```bash
-roocommander search <keyword>
-roocommander search database
-roocommander search "cloudflare workers"
-roocommander search ai --verbose
+flow-orch search <keyword>
+flow-orch search database
+flow-orch search "cloudflare workers"
+flow-orch search ai --verbose
 ```
 
 **Options**:
@@ -139,9 +139,9 @@ Source: /home/user/.claude/skills
 
 **Syntax**:
 ```bash
-roocommander generate-index
-roocommander generate-index --output custom/path.md
-roocommander generate-index --source ~/custom/skills
+flow-orch generate-index
+flow-orch generate-index --output custom/path.md
+flow-orch generate-index --source ~/custom/skills
 ```
 
 **Options**:
@@ -167,8 +167,8 @@ roocommander generate-index --source ~/custom/skills
 
 **Syntax**:
 ```bash
-roocommander sync-index
-roocommander sync-index --output custom/path.md
+flow-orch sync-index
+flow-orch sync-index --output custom/path.md
 ```
 
 **Options**:
@@ -186,13 +186,13 @@ roocommander sync-index --output custom/path.md
 
 ---
 
-### init - Initialize Roo Commander
+### init - Initialize Flow Orchestrator
 
-**Purpose**: Set up Roo Commander system in current project
+**Purpose**: Set up Flow Orchestrator system in current project
 
 **Syntax**:
 ```bash
-roocommander init
+flow-orch init
 ```
 
 **Output**: Creates complete `.roo/` structure:
@@ -202,13 +202,13 @@ roocommander init
     01-skills-index.md
     02-cli-usage.md (this file)
     03-skill-patterns.md
-  rules-roocommander/
+  rules-flow-orchestrator/
     00-core-identity.md
     01-orchestration.md
     02-skill-routing.md
   commands/
     [slash command files]
-.roomodes (Roo Commander mode definition)
+.roomodes (Flow Orchestrator mode definition)
 ```
 
 **Use When**: First-time setup in new project
@@ -242,7 +242,7 @@ All commands support these flags:
    ```
 3. Use `--source` flag to point to custom location:
    ```bash
-   roocommander list --source /path/to/skills
+   flow-orch list --source /path/to/skills
    ```
 
 ### Skill Not Found
@@ -256,32 +256,32 @@ All commands support these flags:
    ```
 2. Use fuzzy search:
    ```bash
-   roocommander search skill-name
+   flow-orch search skill-name
    ```
 3. List all available skills:
    ```bash
-   roocommander list
+   flow-orch list
    ```
 
 CLI supports case-insensitive fuzzy matching, but exact names work best.
 
 ### Command Not Found
 
-**Error**: `roocommander: command not found`
+**Error**: `flow-orchestrator: command not found`
 
 **Solutions**:
 1. Install globally:
    ```bash
-   npm install -g @jezweb/roocommander
+   npm install -g flow-orchestrator
    ```
 2. Use npx (no installation needed):
    ```bash
-   npx @jezweb/roocommander list
+   npx flow-orchestrator list
    ```
 3. Check installation:
    ```bash
-   which roocommander
-   npm list -g @jezweb/roocommander
+   which flow-orchestrator
+   npm list -g flow-orchestrator
    ```
 
 ### Empty Output
@@ -304,11 +304,11 @@ find ~/.claude/skills/ -name "SKILL.md"
 
 ## Integration Workflow
 
-Typical workflow for using roocommander CLI:
+Typical workflow for using flow-orchestrator CLI:
 
 1. **Check skills index**: Read `.roo/rules/01-skills-index.md`
 2. **Identify relevant skill**: Match user request to skill keywords
-3. **Load skill**: Run `roocommander read <skill-name>`
+3. **Load skill**: Run `flow-orch read <skill-name>`
 4. **Parse output**: Full SKILL.md content appears in stdout
 5. **Apply knowledge**: Use patterns, templates, gotchas in implementation
 
@@ -318,7 +318,7 @@ User: "Set up Cloudflare D1 database"
 
 1. Check index: Find "Cloudflare D1 Database" skill
 2. Match keywords: "d1", "database", "cloudflare", "sql"
-3. Load: `roocommander read "Cloudflare D1 Database"`
+3. Load: `flow-orch read "Cloudflare D1 Database"`
 4. Parse: Read wrangler.toml binding syntax, migration patterns, Drizzle integration
 5. Apply: Use proven patterns instead of trial-and-error
 ```
@@ -329,8 +329,8 @@ User: "Set up Cloudflare D1 database"
 
 All commands output to stdout, suitable for:
 - Direct reading by AI agents
-- Piping to other tools: `roocommander read cloudflare-d1 | grep "wrangler"`
-- Saving to files: `roocommander list > skills-list.txt`
+- Piping to other tools: `flow-orch read cloudflare-d1 | grep "wrangler"`
+- Saving to files: `flow-orch list > skills-list.txt`
 
 **Output formatting**:
 - Default: Colored, formatted for terminal display
@@ -338,4 +338,4 @@ All commands output to stdout, suitable for:
 
 ---
 
-*This file is part of Roo Commander v9.0.0 - See .roo/rules/03-skill-patterns.md for when to use skills*
+*This file is part of Flow Orchestrator v9.0.0 - See .roo/rules/03-skill-patterns.md for when to use skills*
