@@ -1,6 +1,6 @@
-# Roo Commander V8.1: Roo Code Custom Modes
+# Flow Orchestrator V8.1: Roo Code Custom Modes
 
-This document explains how Roo Commander defines and utilizes custom modes within the Roo Code environment, leveraging the `.roomodes` file and the structured `/.roo/commander/modes/` directory.
+This document explains how Flow Orchestrator defines and utilizes custom modes within the Roo Code environment, leveraging the `.roomodes` file and the structured `/.roo/commander/modes/` directory.
 
 ## 1. Custom Mode Definition in Roo Code
 
@@ -8,7 +8,7 @@ Roo Code allows for the creation of custom modes to tailor its behavior for spec
 
 ### 1.1. The `.roomodes` File
 
-At the heart of project-specific custom mode definitions in Roo Code is the `.roomodes` YAML file, located in the project's root directory. This single file contains the combined definitions for all custom modes available within that project. Roo Commander automates the generation of this file by combining individual mode YAMLs.
+At the heart of project-specific custom mode definitions in Roo Code is the `.roomodes` YAML file, located in the project's root directory. This single file contains the combined definitions for all custom modes available within that project. Flow Orchestrator automates the generation of this file by combining individual mode YAMLs.
 
 ### 1.2. Mode Properties
 
@@ -22,9 +22,9 @@ Each custom mode defined in `.roomodes` (and authored in `/.roo/commander/modes/
 *   **`whenToUse`**: Provides guidance for Roo Code's orchestrator on scenarios or keywords that would suggest or activate this mode. This helps in automated mode selection.
 *   **`customInstructions`**: A very brief, overarching instruction for the AI, primarily directing it to consult its mode-specific rules folder for detailed guidance (e.g., "Refer to your rules directory for detailed instructions and procedures."). This acts as a high-level directive.
 
-## 2. Roo Commander's Approach to Custom Mode Authoring
+## 2. Flow Orchestrator's Approach to Custom Mode Authoring
 
-Roo Commander organizes individual custom mode definitions in the `/.roo/commander/modes/` directory. Each mode has its own dedicated YAML file (e.g., `roo-commander.yaml`, `project-manager.yaml`).
+Flow Orchestrator organizes individual custom mode definitions in the `/.roo/commander/modes/` directory. Each mode has its own dedicated YAML file (e.g., `flow-orchestrator.yaml`, `project-manager.yaml`).
 
 This approach offers several benefits:
 
@@ -35,4 +35,4 @@ This approach offers several benefits:
 
 ## 3. Deployment and Activation
 
-When deploying Roo Commander, the entire `/.roo/commander/` structure (including the `modes/` directory) is copied into the user's project. After copying, the `combine_mode_yamls.js` script is run to generate or update the `.roomodes` file. Once `.roomodes` is in place, Roo Code automatically recognizes and makes the custom modes available for use.
+When deploying Flow Orchestrator, the entire `/.roo/commander/` structure (including the `modes/` directory) is copied into the user's project. After copying, the `combine_mode_yamls.js` script is run to generate or update the `.roomodes` file. Once `.roomodes` is in place, Roo Code automatically recognizes and makes the custom modes available for use.

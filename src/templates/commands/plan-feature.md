@@ -87,7 +87,7 @@ Run: /load-skill [name] to load relevant skills
 Search for skills related to the feature:
 
 ```bash
-roocommander search <keyword>
+flow-orch search <keyword>
 ```
 
 Present findings:
@@ -208,7 +208,7 @@ Add database schema and data access functions for [feature].
 
 ### Skills to Use
 
-- Load: `roocommander read "[skill-name]"`
+- Load: `flow-orch read "[skill-name]"`
 - This skill provides: [what it covers]
 
 ### Critical Dependencies
@@ -346,7 +346,7 @@ When generating phases, use this exact structure:
 
 ### Skills to Use
 
-- Load: `roocommander read "[skill-name]"`
+- Load: `flow-orch read "[skill-name]"`
 - This skill provides: [key topics]
 
 ### Critical Dependencies
@@ -469,4 +469,4 @@ Plan these separately?
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use after /plan-project for adding features*
+*This command is part of Flow Orchestrator v9.0.0 - Use after /plan-project for adding features*

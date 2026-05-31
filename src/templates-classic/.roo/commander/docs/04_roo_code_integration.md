@@ -1,12 +1,12 @@
-# Roo Commander V8.1: Roo Code Integration
+# Flow Orchestrator V8.1: Roo Code Integration
 
-Roo Commander V8.1 is designed to integrate seamlessly with the Roo Code environment, leveraging its native features for custom modes and custom instructions. This document explains how Roo Commander's components map to Roo Code's expectations.
+Flow Orchestrator V8.1 is designed to integrate seamlessly with the Roo Code environment, leveraging its native features for custom modes and custom instructions. This document explains how Flow Orchestrator's components map to Roo Code's expectations.
 
 ## 1. Custom Mode Definition (`.roomodes` YAML)
 
-Roo Code consumes a single `.roomodes` YAML file (located in the project root) to define all custom modes. Roo Commander generates this file by combining individual mode YAMLs.
+Roo Code consumes a single `.roomodes` YAML file (located in the project root) to define all custom modes. Flow Orchestrator generates this file by combining individual mode YAMLs.
 
-### Mapping from Roo Commander Mode YAML to `.roomodes`
+### Mapping from Flow Orchestrator Mode YAML to `.roomodes`
 
 Each `[mode_slug].yaml` file in `/.roo/commander/modes/` directly maps to an entry in the `customModes` array within the `.roomodes` file.
 
@@ -20,18 +20,18 @@ Each `[mode_slug].yaml` file in `/.roo/commander/modes/` directly maps to an ent
 
 ## 2. Layered Custom Instructions
 
-Roo Commander leverages Roo Code's layered custom instructions mechanism for token efficiency and dynamic context retrieval.
+Flow Orchestrator leverages Roo Code's layered custom instructions mechanism for token efficiency and dynamic context retrieval.
 
 ### Tier 1: Universal Rules (`.roo/rules/`)
 
 *   **Roo Code Behavior:** Automatically loads all Markdown files from `/.roo/rules/` (and `~/.roo/rules/` for global) into the context of *every* active mode.
-*   **Roo Commander Usage:** This folder contains fundamental, project-wide standards (e.g., TOML+MD format, MDTM standard, session management standard) that are universally applicable to all modes operating within the Roo Commander ecosystem.
+*   **Flow Orchestrator Usage:** This folder contains fundamental, project-wide standards (e.g., TOML+MD format, MDTM standard, session management standard) that are universally applicable to all modes operating within the Flow Orchestrator ecosystem.
 *   **Principle:** Keep this content lean and high-level to avoid unnecessary token consumption for all modes.
 
 ### Tier 2: Mode-Specific Pre-loaded Rules (`.roo/rules-[mode_slug]/`)
 
 *   **Roo Code Behavior:** Automatically loads all Markdown files from `/.roo/rules-[mode_slug]/` (and its subdirectories) into the context of the LLM *only when that specific mode is active*.
-*   **Roo Commander Usage:** This folder contains:
+*   **Flow Orchestrator Usage:** This folder contains:
     *   `00-[mode_slug]-core-principles.md`: Defines the mode's core operational tenets and its strategy for using its `kb/`.
     *   `kb/` folder: **This is where the mode's detailed Knowledge Base resides.**
 *   **Principle:** Provides essential, always-relevant context for a specific mode without being loaded for all modes.
@@ -40,8 +40,8 @@ For a more detailed explanation of the layered Knowledge Base strategy, refer to
 
 ## 3. MDTM Integration
 
-Roo Commander uses MDTM as the primary mechanism for task delegation and progress tracking. Roo Code's ability to read and write files allows modes to interact with MDTM files seamlessly.
+Flow Orchestrator uses MDTM as the primary mechanism for task delegation and progress tracking. Roo Code's ability to read and write files allows modes to interact with MDTM files seamlessly.
 
 ## 4. Session Management
 
-Roo Commander's session management (creating session directories, logging to `session_log.md`) relies on Roo Code's file system access capabilities.
+Flow Orchestrator's session management (creating session directories, logging to `session_log.md`) relies on Roo Code's file system access capabilities.

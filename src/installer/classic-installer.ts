@@ -8,11 +8,11 @@ import inquirer from 'inquirer';
 /**
  * Classic Installer
  *
- * Installs the v8.1 MDTM-based Roo Commander system.
+ * Installs the v8.1 MDTM-based Flow Orchestrator system.
  * This is the "classic" version without Claude skills integration.
  *
  * Includes:
- * - All 9 classic modes (Roo Commander, Project Manager, Task Planner, etc.)
+ * - All 9 classic modes (Flow Orchestrator, Project Manager, Task Planner, etc.)
  * - MDTM (Markdown-Driven Task Management) system
  * - Session management
  * - Knowledge bases for each mode
@@ -32,7 +32,7 @@ export interface ClassicInstallResult {
 }
 
 /**
- * Install Roo Commander Classic to project
+ * Install Flow Orchestrator Classic to project
  *
  * @param options Install options
  * @returns Install result with list of files installed
@@ -58,12 +58,12 @@ export async function installClassic(
 
   // Check if already installed
   const mdtmDir = join(projectRoot, '.mdtm');
-  const rooCommanderDir = join(projectRoot, '.roo', 'rules-roo-commander');
+  const flowOrchestratorDir = join(projectRoot, '.roo', 'rules-flow-orchestrator');
 
-  if ((existsSync(mdtmDir) || existsSync(rooCommanderDir)) && !force) {
+  if ((existsSync(mdtmDir) || existsSync(flowOrchestratorDir)) && !force) {
     console.log(
       chalk.yellow(
-        `\n⚠️  Roo Commander Classic appears to already be installed`
+        `\n⚠️  Flow Orchestrator Classic appears to already be installed`
       )
     );
 
@@ -86,7 +86,7 @@ export async function installClassic(
     }
   }
 
-  const spinner = ora('Installing Roo Commander Classic (MDTM system)...').start();
+  const spinner = ora('Installing Flow Orchestrator Classic (MDTM system)...').start();
 
   try {
     // 1. Copy .mdtm directory structure
@@ -120,7 +120,7 @@ export async function installClassic(
       errors.push(roomodesResult.error || 'Failed to create/merge .roomodes');
     }
 
-    spinner.succeed(chalk.green('✅ Roo Commander Classic installed'));
+    spinner.succeed(chalk.green('✅ Flow Orchestrator Classic installed'));
 
     // Show summary
     console.log(chalk.white('\n📦 Installed classic MDTM system:'));
@@ -130,7 +130,7 @@ export async function installClassic(
     console.log(chalk.gray('   • .roo/rules-*/ - Mode-specific rules and KBs'));
     console.log(chalk.gray('   • .roo/commander/ - Templates and documentation'));
     console.log(chalk.gray('   • .roomodes - 9 custom modes'));
-    console.log(chalk.white('\n🚀 Switch to "👑 Roo Commander" mode to start!\n'));
+    console.log(chalk.white('\n🚀 Switch to "👑 Flow Orchestrator" mode to start!\n'));
 
     return {
       success: errors.length === 0,
@@ -138,7 +138,7 @@ export async function installClassic(
       errors,
     };
   } catch (error) {
-    spinner.fail(chalk.red('Failed to install Roo Commander Classic'));
+    spinner.fail(chalk.red('Failed to install Flow Orchestrator Classic'));
     errors.push((error as Error).message);
 
     return {
@@ -301,7 +301,7 @@ function getClassicTemplatesDir(): string {
 }
 
 /**
- * Check if Roo Commander Classic is installed
+ * Check if Flow Orchestrator Classic is installed
  *
  * @param projectRoot Project root directory
  * @returns True if classic version is installed

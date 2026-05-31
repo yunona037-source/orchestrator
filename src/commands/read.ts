@@ -59,11 +59,11 @@ export async function readCommand(
           });
           console.log(
             chalk.gray(
-              `\nTry: ${chalk.white(`roo-commander read ${similar[0].metadata.name}`)}`
+              `\nTry: ${chalk.white(`flow-orch read ${similar[0].metadata.name}`)}`
             )
           );
         } else {
-          console.log(chalk.gray('  (run "roo-commander list" to see all)'));
+          console.log(chalk.gray('  (run "flow-orch list" to see all)'));
         }
         console.log();
       } else {

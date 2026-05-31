@@ -65,8 +65,8 @@ Command:
 cat .roo/rules/01-skills-index.md
 
 # Option B: Search for specific terms
-roocommander search d1
-roocommander search database
+flow-orch search d1
+flow-orch search database
 ```
 
 ### Step 3: Match Keywords
@@ -82,11 +82,11 @@ Keywords: drizzle orm, drizzle d1, type-safe sql, drizzle schema, drizzle migrat
 ```
 
 ### Step 4: Load Skill
-Run `roocommander read <skill-name>` to get full skill content.
+Run `flow-orch read <skill-name>` to get full skill content.
 
 ```bash
-roocommander read "Cloudflare D1 Database"
-roocommander read drizzle-orm-d1
+flow-orch read "Cloudflare D1 Database"
+flow-orch read drizzle-orm-d1
 ```
 
 Output: Full SKILL.md markdown with patterns, examples, gotchas, templates.
@@ -134,7 +134,7 @@ Some requests require multiple skills working together.
 ### Use Skills When:
 
 **Technology is listed** in skills index
-- Check: `roocommander list | grep -i <technology>`
+- Check: `flow-orch list | grep -i <technology>`
 - If match found → load skill
 
 **Setting up new service/framework**
@@ -170,7 +170,7 @@ Some requests require multiple skills working together.
 - Domain-specific rules
 
 **No matching skill exists**
-- Check: `roocommander search <keyword>`
+- Check: `flow-orch search <keyword>`
 - If no results → implement manually
 
 **Trivial tasks**
@@ -230,7 +230,7 @@ Some requests require multiple skills working together.
 
 **With cloudflare-d1 skill**:
 ```bash
-roocommander read "Cloudflare D1 Database"
+flow-orch read "Cloudflare D1 Database"
 ```
 ```
 1. Copy binding syntax from skill (proven correct)
@@ -260,7 +260,7 @@ roocommander read "Cloudflare D1 Database"
 
 **With tailwind-v4-shadcn skill**:
 ```bash
-roocommander read "Tailwind v4"
+flow-orch read "Tailwind v4"
 ```
 ```
 1. Install @tailwindcss/vite (not PostCSS)
@@ -289,7 +289,7 @@ roocommander read "Tailwind v4"
 
 **With openai-api skill**:
 ```bash
-roocommander read "openai-api"
+flow-orch read "openai-api"
 ```
 ```
 1. Use current openai@5.x SDK
@@ -333,7 +333,7 @@ Skills are token-optimized for AI context:
 
 ## Skill Update Workflow
 
-Skills are maintained separately from Roo Commander CLI.
+Skills are maintained separately from Flow Orchestrator CLI.
 
 ### When skills get updated:
 
@@ -345,7 +345,7 @@ Skills are maintained separately from Roo Commander CLI.
 
 2. **Regenerate index**:
    ```bash
-   roocommander sync-index
+   flow-orch sync-index
    ```
 
 3. **New index available**: `.roo/rules/01-skills-index.md` refreshed with latest skills
@@ -359,12 +359,12 @@ Skills are maintained separately from Roo Commander CLI.
 
 ## Integration with Built-In Modes
 
-These patterns apply to **ALL Roo Code modes**, not just Roo Commander:
+These patterns apply to **ALL Roo Code modes**, not just Flow Orchestrator:
 
 **Code mode**: Check skills before implementing features
 **Architect mode**: Reference skills for system design patterns
 **Debug mode**: Check skills for known errors and fixes
-**Roo Commander mode**: Automatically checks skills as part of orchestration
+**Flow Orchestrator mode**: Automatically checks skills as part of orchestration
 
 ### Example: Code Mode Usage
 
@@ -373,12 +373,12 @@ User (in Code mode): "Set up Cloudflare D1 database"
 
 Code mode workflow:
 1. Check: .roo/rules/01-skills-index.md → find "Cloudflare D1 Database"
-2. Load: roocommander read "Cloudflare D1 Database"
+2. Load: flow-orch read "Cloudflare D1 Database"
 3. Implement: Using patterns from skill
 4. Verify: Against verification criteria in skill
 ```
 
-**Result**: Code mode becomes skill-aware without needing Roo Commander orchestration.
+**Result**: Code mode becomes skill-aware without needing Flow Orchestrator orchestration.
 
 ---
 
@@ -392,9 +392,9 @@ Code mode workflow:
 
 **Commands**:
 ```bash
-roocommander list              # Browse all skills
-roocommander search <keyword>  # Find relevant skills
-roocommander read <skill>      # Load skill content
+flow-orch list              # Browse all skills
+flow-orch search <keyword>  # Find relevant skills
+flow-orch read <skill>      # Load skill content
 ```
 
 **Decision**:
@@ -405,4 +405,4 @@ roocommander read <skill>      # Load skill content
 
 ---
 
-*This file is part of Roo Commander v9.0.0 - See .roo/rules/02-cli-usage.md for CLI command reference*
+*This file is part of Flow Orchestrator v9.0.0 - See .roo/rules/02-cli-usage.md for CLI command reference*

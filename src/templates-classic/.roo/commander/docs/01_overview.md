@@ -1,8 +1,8 @@
-# Roo Commander V8.1: Lean & Efficient AI Orchestration
+# Flow Orchestrator V8.1: Lean & Efficient AI Orchestration
 
 ## Purpose & Vision
 
-Roo Commander V8.1 is a streamlined, intelligent orchestration system designed to manage complex workflows by leveraging specialized AI modes within the Roo Code environment. Our vision is to provide a powerful yet intuitive system that assists users in achieving complex goals by intelligently coordinating a team of specialized AI agents, while prioritizing token efficiency and clarity.
+Flow Orchestrator V8.1 is a streamlined, intelligent orchestration system designed to manage complex workflows by leveraging specialized AI modes within the Roo Code environment. Our vision is to provide a powerful yet intuitive system that assists users in achieving complex goals by intelligently coordinating a team of specialized AI agents, while prioritizing token efficiency and clarity.
 
 This iteration focuses on:
 *   **Lean Core:** Minimizing overhead and unnecessary abstractions.
@@ -12,9 +12,9 @@ This iteration focuses on:
 
 ## Core Architectural Concepts
 
-Roo Commander operates on a hierarchical "Orchestrator + Manager + Squad" model, with Markdown-Driven Task Management (MDTM) as the communication backbone and a layered approach to Knowledge Bases (KBs).
+Flow Orchestrator operates on a hierarchical "Orchestrator + Manager + Squad" model, with Markdown-Driven Task Management (MDTM) as the communication backbone and a layered approach to Knowledge Bases (KBs).
 
-### Orchestrator (`roo-commander`)
+### Orchestrator (`flow-orchestrator`)
 The primary user-facing AI. It initiates sessions, understands high-level user goals, and delegates to the appropriate Manager mode. It manages overall session context and traceability.
 
 ### Manager Modes (e.g., `project-manager`)

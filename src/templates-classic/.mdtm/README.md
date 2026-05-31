@@ -1,6 +1,6 @@
 # .mdtm/ - Markdown-Driven Task Management Files
 
-This directory serves as the central repository for all Markdown-Driven Task Management (MDTM) files generated and managed by Roo Commander modes. It is designed to provide a clear, traceable, and human-readable record of all delegated tasks and work sessions.
+This directory serves as the central repository for all Markdown-Driven Task Management (MDTM) files generated and managed by Flow Orchestrator modes. It is designed to provide a clear, traceable, and human-readable record of all delegated tasks and work sessions.
 
 ## Structure
 
@@ -12,7 +12,7 @@ This directory serves as the central repository for all Markdown-Driven Task Man
 *   **Task Tracking:** All delegated tasks, from high-level objectives to granular sub-tasks, are recorded here.
 *   **Session Traceability:** Each work session has a dedicated log and associated artifacts for comprehensive context.
 *   **Human Readability:** Files are in TOML+Markdown format, making them easy to read and understand.
-*   **AI Interaction:** Roo Commander modes interact with these files to manage workflows, update progress, and log events.
+*   **AI Interaction:** Flow Orchestrator modes interact with these files to manage workflows, update progress, and log events.
 
 ## Usage
 

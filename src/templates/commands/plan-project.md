@@ -38,7 +38,7 @@ Wait for user response.
 
 Based on tech stack, identify relevant skills:
 
-Run: `roocommander search <technology>`
+Run: `flow-orch search <technology>`
 
 Example:
 - If "Cloudflare D1" mentioned: search `d1 database`
@@ -187,7 +187,7 @@ Project scaffold complete, build working, ready for feature implementation.
 
 ### Skills to Use
 
-- Load: `roocommander read "[skill-name]"`
+- Load: `flow-orch read "[skill-name]"`
 - This skill provides: [what it covers]
 
 ### Tasks
@@ -305,10 +305,6 @@ Generated planning documentation:
 [- Other docs if created]
 
 Next: Start Phase 1 - [Phase Name]
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -364,7 +360,7 @@ When creating phases, use this detailed template for each phase:
 
 ### Skills to Use
 
-- Load: `roocommander read "[skill-name]"`
+- Load: `flow-orch read "[skill-name]"`
 - This skill provides: [key topics from skill]
 
 ### Critical Dependencies
@@ -496,4 +492,4 @@ N+1. Polish & Deploy
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /wrap-session after completing each phase*
+*This command is part of Flow Orchestrator v9.0.0 - Use /wrap-session after completing each phase*

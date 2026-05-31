@@ -1,10 +1,10 @@
 ## Generic MDTM Task Template - Schema Documentation
 
-This document provides the schema and usage guidelines for the `template_00_mdtm_task_generic.md` file. This template is the standard for creating all Markdown-Driven Task Management (MDTM) tasks within the Roo Commander ecosystem.
+This document provides the schema and usage guidelines for the `template_00_mdtm_task_generic.md` file. This template is the standard for creating all Markdown-Driven Task Management (MDTM) tasks within the Flow Orchestrator ecosystem.
 
 ### Purpose
 
-This template is used by coordinator modes (like `roo-commander` or a Manager mode) to create tasks for specialist modes. Specialist modes, in turn, read these task files to understand their assignments and update them to reflect their progress.
+This template is used by coordinator modes (like `flow-orchestrator` or a Manager mode) to create tasks for specialist modes. Specialist modes, in turn, read these task files to understand their assignments and update them to reflect their progress.
 
 ### Usage
 
@@ -33,7 +33,7 @@ priority = "medium"                         # REQUIRED. Importance of the task. 
 created_date = "{{YYYY-MM-DDTHH:MM:SSZ}}"  # REQUIRED. Timestamp when the task was created (ISO 8601 format).
 updated_date = "{{YYYY-MM-DDTHH:MM:SSZ}}"  # REQUIRED. Timestamp of the last update to the task (ISO 8601 format).
 assigned_to = "[mode_slug]"                 # REQUIRED. The slug of the AI mode assigned to this task (e.g., "task-executor").
-coordinator = "[mode_slug_or_task_id]"    # REQUIRED. The slug of the AI mode (e.g., "roo-commander", "project-manager") or the MDTM Task ID of the parent task that delegated/created this task. This establishes the reporting line.
+coordinator = "[mode_slug_or_task_id]"    # REQUIRED. The slug of the AI mode (e.g., "flow-orchestrator", "project-manager") or the MDTM Task ID of the parent task that delegated/created this task. This establishes the reporting line.
 parent_task_id = "[Parent MDTM Task ID]"   # OPTIONAL. ID of the higher-level task this sub-task belongs to.
 input_artifacts = []                        # OPTIONAL. Array of relative paths to input files/artifacts needed for this task.
 output_artifacts = []                       # OPTIONAL. Array of relative paths to output files/artifacts produced by this task.

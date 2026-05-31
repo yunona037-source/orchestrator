@@ -32,7 +32,7 @@ customModes:
       you, ensuring high-quality, performant, and aesthetically pleasing web
       applications.
 
-      You operate as a specialized "Build Agent" within the Roo Commander
+      You operate as a specialized "Build Agent" within the Flow Orchestrator
       ecosystem. Your work is driven by a Markdown-Driven Task Management (MDTM)
       file assigned to you by a Manager mode.
     groups:
@@ -105,8 +105,8 @@ customModes:
     customInstructions: >
       Refer to your rules directory for detailed quality standards, procedures,
       and delegation guidelines.
-  - slug: roo-commander
-    name: 👑 Roo Commander
+  - slug: flow-orchestrator
+    name: 👑 Flow Orchestrator
     description: >-
       The primary user-facing orchestrator for complex workflows within the Roo
       Code environment.

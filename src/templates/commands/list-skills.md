@@ -5,25 +5,25 @@ argument-hint: none
 
 # List Skills
 
-Display all available skills with descriptions and keywords using the roocommander CLI.
+Display all available skills with descriptions and keywords using the flow-orchestrator CLI.
 
 ---
 
 ## Your Task
 
-Use the roocommander CLI to list all available skills and present them to the user in a readable format.
+Use the flow-orchestrator CLI to list all available skills and present them to the user in a readable format.
 
 ### Step 1: Check CLI Installation
 
-Verify roocommander is installed:
+Verify flow-orchestrator is installed:
 
 ```bash
-which roocommander
+which flow-orchestrator
 ```
 
 **If not found**:
-- Output: "❌ roocommander CLI not installed."
-- Instruct user: "Install with: `npm install -g @jezweb/roocommander`"
+- Output: "❌ flow-orchestrator CLI not installed."
+- Instruct user: "Install with: `npm install -g flow-orchestrator`"
 - Stop here
 
 **If found**:
@@ -31,10 +31,10 @@ which roocommander
 
 ### Step 2: Run List Command
 
-Execute the roocommander list command:
+Execute the flow-orch list command:
 
 ```bash
-roocommander list --verbose
+flow-orch list --verbose
 ```
 
 **Command options**:
@@ -63,14 +63,14 @@ Read the command output and present it to the user.
 Skills are organized by category in the skills index.
 Use /load-skill [name] to load a specific skill into context.
 
-[Output from roocommander list --verbose]
+[Output from flow-orch list --verbose]
 
 ───────────────────────────────────────────────
 
-💡 Tip: Use roocommander search <keyword> to find skills by technology:
-   - roocommander search cloudflare
-   - roocommander search authentication
-   - roocommander search chat
+💡 Tip: Use flow-orch search <keyword> to find skills by technology:
+   - flow-orch search cloudflare
+   - flow-orch search authentication
+   - flow-orch search chat
 
 Or read the full skills index: .roo/rules/01-skills-index.md
 ```
@@ -92,11 +92,11 @@ Your choice (1/2/3/4):
 
 **If choice 1**:
 - Ask: "Which skill would you like to load? (Enter name)"
-- When user provides name, use /load-skill command or run `roocommander read <skill>`
+- When user provides name, use /load-skill command or run `flow-orch read <skill>`
 
 **If choice 2**:
 - Ask: "What keyword should I search for?"
-- Run: `roocommander search <keyword>`
+- Run: `flow-orch search <keyword>`
 - Display results
 
 **If choice 3**:
@@ -112,13 +112,13 @@ Your choice (1/2/3/4):
 
 **CLI not installed**:
 ```
-❌ roocommander CLI not found.
+❌ flow-orchestrator CLI not found.
 
 Install it with:
-npm install -g @jezweb/roocommander
+npm install -g flow-orchestrator
 
 Or use npx (no installation):
-npx @jezweb/roocommander list
+npx flow-orchestrator list
 ```
 
 **Skills directory not found**:
@@ -130,7 +130,7 @@ This means:
 2. Skills are in a custom location
 
 If custom location, run:
-roocommander list --source /path/to/skills
+flow-orch list --source /path/to/skills
 ```
 
 **Empty output**:
@@ -149,11 +149,11 @@ find ~/.claude/skills/ -name "SKILL.md"
 
 **Command fails**:
 ```
-❌ roocommander list command failed: [error message]
+❌ flow-orch list command failed: [error message]
 
 Try:
-1. Check installation: which roocommander
-2. Check version: roocommander --version
+1. Check installation: which flow-orchestrator
+2. Check version: flow-orch --version
 3. Check skills directory: ls ~/.claude/skills/
 ```
 
@@ -182,19 +182,19 @@ Try:
 
 **Command**:
 ```bash
-roocommander list --verbose
+flow-orch list --verbose
 ```
 
 **Alternative with custom path**:
 ```bash
-roocommander list --source /path/to/skills --verbose
+flow-orch list --source /path/to/skills --verbose
 ```
 
 **Follow-up actions**:
-- Load skill: `/load-skill [name]` or `roocommander read [name]`
-- Search: `roocommander search [keyword]`
+- Load skill: `/load-skill [name]` or `flow-orch read [name]`
+- Search: `flow-orch search [keyword]`
 - Read index: `.roo/rules/01-skills-index.md`
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /load-skill to load a specific skill after listing*
+*This command is part of Flow Orchestrator v9.0.0 - Use /load-skill to load a specific skill after listing*

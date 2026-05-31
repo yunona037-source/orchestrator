@@ -71,7 +71,7 @@ export async function generateIndexCommand(
     console.log(chalk.gray('  1. The index is automatically loaded by Roo Code'));
     console.log(
       chalk.gray('  2. Update the index when skills change: ') +
-        chalk.white('roo-commander sync-index')
+        chalk.white('flow-orch sync-index')
     );
     console.log(
       chalk.gray('  3. View the index: ') +

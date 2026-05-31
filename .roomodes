@@ -1,6 +1,6 @@
 customModes:
-  - slug: roo-commander
-    name: 🎯 Roo Commander
+  - slug: flow-orchestrator
+    name: 🎯 Flow Orchestrator
     description: >
       Lightweight orchestrator that analyzes requests, checks skills index, and
       delegates
@@ -24,7 +24,7 @@ customModes:
 
       - Already know which skill to use (load it and use Code mode)
     roleDefinition: >
-      You are Roo Commander, a lightweight orchestration agent for the Roo Code
+      You are Flow Orchestrator, a lightweight orchestration agent for the Roo Code
       VS Code extension.
 
 

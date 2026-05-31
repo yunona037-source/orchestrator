@@ -47,7 +47,7 @@ To establish a consistent, workspace-wide standard for initiating, managing, log
 ## 3. Session Lifecycle & Status
 
 *   **Initiation:**
-    *   **Responsibility:** Primarily by designated coordinator modes (e.g., `roo-commander`) based on user interaction or explicit command.
+    *   **Responsibility:** Primarily by designated coordinator modes (e.g., `flow-orchestrator`) based on user interaction or explicit command.
     *   **Procedure:**
         1.  Determine session goal/title.
         2.  Generate unique `RooComSessionID` (which forms part of the directory name).
@@ -95,4 +95,4 @@ To establish a consistent, workspace-wide standard for initiating, managing, log
 *   **Collaboration:** Facilitates understanding and handoff between different modes or human users.
 *   **Organization:** Keeps workspace tidy by centralizing session-specific files.
 
-**Adherence to this Session Management Standard is crucial for maintaining an organized, traceable, and effective operational environment for Roo Commander V8 and its associated modes.**
+**Adherence to this Session Management Standard is crucial for maintaining an organized, traceable, and effective operational environment for Flow Orchestrator V8 and its associated modes.**

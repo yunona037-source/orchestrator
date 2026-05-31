@@ -11,7 +11,7 @@ import inquirer from 'inquirer';
  * Copies template files from src/templates/ to project .roo/ directory.
  * Handles:
  * - .roo/rules/ (custom instructions)
- * - .roo/rules-roo-commander/ (mode-specific rules)
+ * - .roo/rules-flow-orchestrator/ (mode-specific rules)
  * - .roo/commands/ (slash commands)
  * - .roomodes (mode configuration, merged with existing)
  */
@@ -32,7 +32,7 @@ export interface InstallResult {
 }
 
 /**
- * Install all Roo Commander templates to project
+ * Install all Flow Orchestrator templates to project
  *
  * @param options Install options
  * @returns Install result with list of files installed
@@ -57,16 +57,16 @@ export async function installTemplates(
   }
 
   // Check if already installed
-  const rooCommanderDir = join(projectRoot, '.roo', 'rules-roo-commander');
-  if (existsSync(rooCommanderDir) && !force) {
+  const flowOrchestratorDir = join(projectRoot, '.roo', 'rules-flow-orchestrator');
+  if (existsSync(flowOrchestratorDir) && !force) {
     console.log(
       chalk.yellow(
-        `\n⚠️  Roo Commander already installed at ${chalk.cyan(rooCommanderDir)}`
+        `\n⚠️  Flow Orchestrator already installed at ${chalk.cyan(flowOrchestratorDir)}`
       )
     );
     console.log(
       chalk.gray(
-        `Run with --force to reinstall, or remove .roo/rules-roo-commander/ first.\n`
+        `Run with --force to reinstall, or remove .roo/rules-flow-orchestrator/ first.\n`
       )
     );
     return {
@@ -76,14 +76,14 @@ export async function installTemplates(
     };
   }
 
-  const spinner = ora('Installing Roo Commander templates...').start();
+  const spinner = ora('Installing Flow Orchestrator templates...').start();
 
   try {
     // 1. Create .roo/ directory structure
     const rooDirs = [
       join(projectRoot, '.roo'),
       join(projectRoot, '.roo', 'rules'),
-      join(projectRoot, '.roo', 'rules-roo-commander'),
+      join(projectRoot, '.roo', 'rules-flow-orchestrator'),
       join(projectRoot, '.roo', 'commands'),
     ];
 
@@ -108,20 +108,20 @@ export async function installTemplates(
       }
     }
 
-    // 3. Copy rules-roo-commander templates
-    const modeRulesDir = join(templates, 'rules-roo-commander');
+    // 3. Copy rules-flow-orchestrator templates
+    const modeRulesDir = join(templates, 'rules-flow-orchestrator');
     if (existsSync(modeRulesDir)) {
       const modeRulesFiles = readdirSync(modeRulesDir);
       for (const file of modeRulesFiles) {
         if (file.endsWith('.md')) {
           const src = join(modeRulesDir, file);
-          const dest = join(projectRoot, '.roo', 'rules-roo-commander', file);
+          const dest = join(projectRoot, '.roo', 'rules-flow-orchestrator', file);
           copyFileSync(src, dest);
-          filesInstalled.push(`.roo/rules-roo-commander/${file}`);
+          filesInstalled.push(`.roo/rules-flow-orchestrator/${file}`);
         }
       }
     } else {
-      errors.push('rules-roo-commander templates directory not found');
+      errors.push('rules-flow-orchestrator templates directory not found');
     }
 
     // 4. Copy slash commands
@@ -148,7 +148,7 @@ export async function installTemplates(
       errors.push(roomodesResult.error || 'Failed to create/merge .roomodes');
     }
 
-    spinner.succeed(chalk.green('✅ Roo Commander templates installed'));
+    spinner.succeed(chalk.green('✅ Flow Orchestrator templates installed'));
 
     return {
       success: errors.length === 0,
@@ -170,8 +170,8 @@ export async function installTemplates(
 /**
  * Create or merge .roomodes file
  *
- * If .roomodes exists, merge Roo Commander entry.
- * If doesn't exist, create new file with Roo Commander entry.
+ * If .roomodes exists, merge Flow Orchestrator entry.
+ * If doesn't exist, create new file with Flow Orchestrator entry.
  *
  * @param projectRoot Project root directory
  * @param templatesDir Templates directory
@@ -182,25 +182,25 @@ async function createOrMergeRoomodes(
   templatesDir: string
 ): Promise<{ success: boolean; error?: string }> {
   const roomodesPath = join(projectRoot, '.roomodes');
-  const templatePath = join(templatesDir, '.roomodes-entry.yaml');
+  const templatePath = join(templatesDir, '.flow-orchestratormodes-entry.yaml');
 
   // Read template entry
   if (!existsSync(templatePath)) {
     return {
       success: false,
-      error: '.roomodes-entry.yaml template not found',
+      error: '.flow-orchestratormodes-entry.yaml template not found',
     };
   }
 
   const templateContent = readFileSync(templatePath, 'utf-8');
 
-  // Parse template to get Roo Commander entry
+  // Parse template to get Flow Orchestrator entry
   // Template has comments, extract just the YAML entry
   const yamlStart = templateContent.indexOf('customModes:');
   if (yamlStart === -1) {
     return {
       success: false,
-      error: 'Invalid .roomodes-entry.yaml template (missing customModes key)',
+      error: 'Invalid .flow-orchestratormodes-entry.yaml template (missing customModes key)',
     };
   }
 
@@ -212,10 +212,10 @@ async function createOrMergeRoomodes(
     if (!parsedTemplate?.customModes || !Array.isArray(parsedTemplate.customModes)) {
       return {
         success: false,
-        error: 'Invalid .roomodes-entry.yaml template (customModes must be an array)',
+        error: 'Invalid .flow-orchestratormodes-entry.yaml template (customModes must be an array)',
       };
     }
-    const rooCommanderMode = parsedTemplate.customModes[0];
+    const flowOrchestratorMode = parsedTemplate.customModes[0];
 
     // Check if .roomodes exists
     if (existsSync(roomodesPath)) {
@@ -228,20 +228,20 @@ async function createOrMergeRoomodes(
         existingData.customModes = [];
       }
 
-      // Check if Roo Commander already exists
-      const hasRooCommander = existingData.customModes.some(
-        (mode: any) => mode.slug === 'roo-commander'
+      // Check if Flow Orchestrator already exists
+      const hasFlowOrchestrator = existingData.customModes.some(
+        (mode: any) => mode.slug === 'flow-orchestrator'
       );
 
-      if (hasRooCommander) {
+      if (hasFlowOrchestrator) {
         // Prompt user before overriding
-        console.log(chalk.yellow('\n⚠️  Roo Commander mode already exists in .roomodes'));
+        console.log(chalk.yellow('\n⚠️  Flow Orchestrator mode already exists in .roomodes'));
 
         const overrideAnswer = await inquirer.prompt([
           {
             type: 'confirm',
             name: 'shouldOverride',
-            message: 'Override existing Roo Commander configuration?',
+            message: 'Override existing Flow Orchestrator configuration?',
             default: false,
           },
         ]);
@@ -253,34 +253,34 @@ async function createOrMergeRoomodes(
 
         // Replace existing entry
         existingData.customModes = existingData.customModes.filter(
-          (mode: any) => mode.slug !== 'roo-commander'
+          (mode: any) => mode.slug !== 'flow-orchestrator'
         );
-        existingData.customModes.push(rooCommanderMode);
+        existingData.customModes.push(flowOrchestratorMode);
 
         const newContent = yaml.stringify(existingData);
         writeFileSync(roomodesPath, newContent, 'utf-8');
 
         console.log(
-          chalk.gray(`\n  Updated existing Roo Commander entry in .roomodes`)
+          chalk.gray(`\n  Updated existing Flow Orchestrator entry in .roomodes`)
         );
       } else {
         // Append to existing
-        existingData.customModes.push(rooCommanderMode);
+        existingData.customModes.push(flowOrchestratorMode);
 
         const newContent = yaml.stringify(existingData);
         writeFileSync(roomodesPath, newContent, 'utf-8');
 
-        console.log(chalk.gray(`\n  Added Roo Commander entry to .roomodes`));
+        console.log(chalk.gray(`\n  Added Flow Orchestrator entry to .roomodes`));
       }
     } else {
       // Create new .roomodes file with customModes wrapper
       const newData = {
-        customModes: [rooCommanderMode]
+        customModes: [flowOrchestratorMode]
       };
       const newContent = yaml.stringify(newData);
       writeFileSync(roomodesPath, newContent, 'utf-8');
 
-      console.log(chalk.gray(`\n  Created .roomodes with Roo Commander entry`));
+      console.log(chalk.gray(`\n  Created .roomodes with Flow Orchestrator entry`));
     }
 
     return { success: true };
@@ -305,12 +305,12 @@ function getTemplatesDir(): string {
 }
 
 /**
- * Check if Roo Commander is already installed
+ * Check if Flow Orchestrator is already installed
  *
  * @param projectRoot Project root directory
  * @returns True if installed
  */
 export function isInstalled(projectRoot: string): boolean {
-  const rooCommanderDir = join(projectRoot, '.roo', 'rules-roo-commander');
-  return existsSync(rooCommanderDir);
+  const flowOrchestratorDir = join(projectRoot, '.roo', 'rules-flow-orchestrator');
+  return existsSync(flowOrchestratorDir);
 }

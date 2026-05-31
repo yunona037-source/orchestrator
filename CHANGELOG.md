@@ -305,7 +305,7 @@ roocommander init --force
 
 ### ✨ Added
 
-#### CLI Tool (`@jezweb/roo-commander`)
+#### CLI Tool (`roo-commander`)
 
 **Commands**:
 - `list` - Display all available skills (compact or verbose)
@@ -584,6 +584,6 @@ See git history for v8.1 features.
 
 ## Links
 
-- **GitHub**: https://github.com/jezweb/roo-commander
+- **GitHub**: https://github.com/yunona037-source/orchestrator
 - **npm**: https://www.npmjs.com/package/roocommander
 - **Skills Repo**: https://github.com/jezweb/claude-skills

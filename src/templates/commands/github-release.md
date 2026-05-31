@@ -434,4 +434,4 @@ https://github.com/[user]/[repo]/releases/new
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /release for general release checklist*
+*This command is part of Flow Orchestrator v9.0.0 - Use /release for general release checklist*

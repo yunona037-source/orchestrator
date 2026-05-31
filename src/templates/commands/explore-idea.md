@@ -54,14 +54,14 @@ Wait for responses.
 
 Based on technologies mentioned, check if relevant skills exist:
 
-Run: `/list-skills` or `roocommander search <keyword>`
+Run: `/list-skills` or `flow-orch search <keyword>`
 
 Example searches based on common needs:
-- Database: `roocommander search database`
-- Auth: `roocommander search authentication`
-- AI: `roocommander search ai`
-- Cloudflare: `roocommander search cloudflare`
-- Frontend: `roocommander search react`
+- Database: `flow-orch search database`
+- Auth: `flow-orch search authentication`
+- AI: `flow-orch search ai`
+- Cloudflare: `flow-orch search cloudflare`
+- Frontend: `flow-orch search react`
 
 Present findings:
 
@@ -360,4 +360,4 @@ Start smaller and iterate?
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /plan-project after exploring to begin planning*
+*This command is part of Flow Orchestrator v9.0.0 - Use /plan-project after exploring to begin planning*

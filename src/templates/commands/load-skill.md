@@ -5,13 +5,13 @@ argument-hint: <skill-name>
 
 # Load Skill
 
-Load a specific skill's full content into context for implementation using the roocommander CLI.
+Load a specific skill's full content into context for implementation using the flow-orchestrator CLI.
 
 ---
 
 ## Your Task
 
-Use the roocommander CLI to load a skill's SKILL.md content and parse it for use in implementation.
+Use the flow-orchestrator CLI to load a skill's SKILL.md content and parse it for use in implementation.
 
 ### Step 1: Parse Skill Name
 
@@ -32,15 +32,15 @@ Extract skill name from user command.
 
 ### Step 2: Check CLI Installation
 
-Verify roocommander is installed:
+Verify flow-orchestrator is installed:
 
 ```bash
-which roocommander
+which flow-orchestrator
 ```
 
 **If not found**:
-- Output: "❌ roocommander CLI not installed."
-- Instruct: "Install with: `npm install -g @jezweb/roocommander`"
+- Output: "❌ flow-orchestrator CLI not installed."
+- Instruct: "Install with: `npm install -g flow-orchestrator`"
 - Stop here
 
 **If found**:
@@ -48,10 +48,10 @@ which roocommander
 
 ### Step 3: Run Read Command
 
-Execute roocommander read command:
+Execute flow-orch read command:
 
 ```bash
-roocommander read "<skill-name>"
+flow-orch read "<skill-name>"
 ```
 
 **Command options**:
@@ -140,13 +140,13 @@ Your choice (1/2/3/4):
 
 **CLI not installed**:
 ```
-❌ roocommander CLI not found.
+❌ flow-orchestrator CLI not found.
 
 Install it with:
-npm install -g @jezweb/roocommander
+npm install -g flow-orchestrator
 
 Or use npx (no installation):
-npx @jezweb/roocommander read "<skill-name>"
+npx flow-orchestrator read "<skill-name>"
 ```
 
 **Skill not found**:
@@ -159,7 +159,7 @@ This might mean:
 
 Try:
 1. List all skills: /list-skills
-2. Search for similar: roocommander search <keyword>
+2. Search for similar: flow-orch search <keyword>
 3. Check skills index: .roo/rules/01-skills-index.md
 
 Similar skills found:
@@ -178,17 +178,17 @@ Similar skills found:
 
 Setup skills:
 1. Clone: git clone https://github.com/jezweb/claude-skills ~/.claude/skills
-2. Or specify custom path: roocommander read "<skill>" --source /path/to/skills
+2. Or specify custom path: flow-orch read "<skill>" --source /path/to/skills
 ```
 
 **Command fails**:
 ```
-❌ roocommander read command failed: [error message]
+❌ flow-orch read command failed: [error message]
 
 Debug:
-1. Check installation: which roocommander
-2. Check version: roocommander --version
-3. Try list command: roocommander list
+1. Check installation: which flow-orchestrator
+2. Check version: flow-orch --version
+3. Try list command: flow-orch list
 4. Check skill exists: ls ~/.claude/skills/[skill-name]/
 ```
 
@@ -254,17 +254,17 @@ Some implementations require multiple skills working together.
 
 **Basic usage**:
 ```bash
-roocommander read "<skill-name>"
+flow-orch read "<skill-name>"
 ```
 
 **With custom path**:
 ```bash
-roocommander read "<skill-name>" --source /path/to/skills
+flow-orch read "<skill-name>" --source /path/to/skills
 ```
 
 **Raw output (no formatting)**:
 ```bash
-roocommander read "<skill-name>" --raw
+flow-orch read "<skill-name>" --raw
 ```
 
 **Common skill names**:
@@ -278,9 +278,9 @@ roocommander read "<skill-name>" --raw
 
 **Finding skills**:
 - List all: `/list-skills`
-- Search: `roocommander search <keyword>`
+- Search: `flow-orch search <keyword>`
 - Index: `.roo/rules/01-skills-index.md`
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /list-skills to browse available skills first*
+*This command is part of Flow Orchestrator v9.0.0 - Use /list-skills to browse available skills first*

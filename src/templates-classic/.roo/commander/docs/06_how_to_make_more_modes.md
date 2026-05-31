@@ -1,6 +1,6 @@
-# For Gemini Agent: How to Make More Roo Commander Modes
+# For Gemini Agent: How to Make More Flow Orchestrator Modes
 
-This guide provides a quick, actionable checklist for creating new custom modes within the Roo Commander V8.1 framework. It builds upon the `05_mode_development_guide.md` but focuses on the practical steps and common considerations.
+This guide provides a quick, actionable checklist for creating new custom modes within the Flow Orchestrator V8.1 framework. It builds upon the `05_mode_development_guide.md` but focuses on the practical steps and common considerations.
 
 ## 1. Design the Mode (Quick Review)
 

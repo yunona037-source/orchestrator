@@ -109,10 +109,6 @@ Verification:
 - ✅ [verification item 2]
 
 Next: [Concrete next action or next phase]
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Examples**:
@@ -139,10 +135,6 @@ Verification:
 - ✅ Invalid data returns 400
 
 Next: Phase 4 - Start building Task List UI component
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -161,10 +153,6 @@ Files Changed:
 - src/lib/schemas.ts (task schema)
 
 Next: Implement PATCH /api/tasks/:id in src/routes/tasks.ts:47
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -271,4 +259,4 @@ Progress saved. You can now:
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /continue-session to resume work after wrapping*
+*This command is part of Flow Orchestrator v9.0.0 - Use /continue-session to resume work after wrapping*

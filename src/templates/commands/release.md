@@ -526,4 +526,4 @@ docker push [image]      # Docker
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /github-release for GitHub-specific releases*
+*This command is part of Flow Orchestrator v9.0.0 - Use /github-release for GitHub-specific releases*

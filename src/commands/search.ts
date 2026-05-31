@@ -51,7 +51,7 @@ export async function searchCommand(
       console.log(chalk.gray('  • Broader search terms'));
       console.log(
         chalk.gray(
-          `  • List all skills: ${chalk.white('roo-commander list')}`
+          `  • List all skills: ${chalk.white('flow-orch list')}`
         )
       );
       console.log();
@@ -75,11 +75,11 @@ export async function searchCommand(
     console.log(chalk.gray('\n─────────────────────────────────────────────'));
     console.log(
       chalk.gray(
-        `\nTo read a skill: ${chalk.white('roo-commander read <skill-name>')}`
+        `\nTo read a skill: ${chalk.white('flow-orch read <skill-name>')}`
       )
     );
     console.log(
-      chalk.gray(`For verbose output: ${chalk.white(`roo-commander search "${keyword}" --verbose`)}\n`)
+      chalk.gray(`For verbose output: ${chalk.white(`flow-orch search "${keyword}" --verbose`)}\n`)
     );
   } catch (error) {
     spinner.fail('Search failed');

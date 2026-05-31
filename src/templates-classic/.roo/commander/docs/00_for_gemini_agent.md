@@ -1,18 +1,18 @@
-# For Gemini Agent: Resuming Work on Roo Commander V8.1
+# For Gemini Agent: Resuming Work on Flow Orchestrator V8.1
 
-This document provides a concise overview and checklist to quickly re-engage with the `roo-commander` project. Remember, you are an external Gemini CLI agent, tasked with building and managing this project, not to simulate or 'become' Roo Commander itself. Your interaction is through file system operations and shell commands.
+This document provides a concise overview and checklist to quickly re-engage with the `flow-orchestrator` project. Remember, you are an external Gemini CLI agent, tasked with building and managing this project, not to simulate or 'become' Flow Orchestrator itself. Your interaction is through file system operations and shell commands.
 
 ## 1. Project Overview & Current State
 
-*   **Project Name:** Roo Commander V8.1
+*   **Project Name:** Flow Orchestrator V8.1
 *   **Purpose:** A lean, token-efficient AI orchestration system designed to manage complex workflows within the Roo Code environment.
 *   **Core Principle:** Operates on an "Orchestrator -> Manager -> Squad" hierarchy, using Markdown-Driven Task Management (MDTM) as its communication backbone.
 *   **Current State:** The project has undergone a major refactoring (V8.1). The structure is now lean, optimized for Roo Code's native features, and all documentation/mode definitions are updated.
-*   **Deployment Model:** The entire `roo-commander` project (the contents of the `.roo/commander/` folder and the `rules-[mode_slug]/` folders) is intended to be copied directly into a user's project's `.roo/` directory.
+*   **Deployment Model:** The entire `flow-orchestrator` project (the contents of the `.roo/commander/` folder and the `rules-[mode_slug]/` folders) is intended to be copied directly into a user's project's `.roo/` directory.
 
 ## 2. Key Architectural Concepts (Brief)
 
-*   **Orchestrator (`roo-commander`):** User-facing, high-level delegation, session management.
+*   **Orchestrator (`flow-orchestrator`):** User-facing, high-level delegation, session management.
 *   **Manager Modes (e.g., `project-manager`):** Domain-specific orchestrators, break down tasks, manage Squads via MDTM.
 *   **Squad Modes (e.g., `task-planner`, `task-executor`):** Specialized executors, perform granular tasks, produce artifacts.
 *   **MDTM:** Standardized TOML+Markdown files for task delegation and tracking (`.mdtm/` folder).
@@ -28,14 +28,14 @@ This document provides a concise overview and checklist to quickly re-engage wit
     *   `.mdtm/`: Contains all MDTM task and session files.
         *   `tasks/`: For MDTM task files.
         *   `sessions/`: For session logs and artifacts.
-*   **`.roo/`:** Root for Roo Code configs and Roo Commander components.
+*   **`.roo/`:** Root for Roo Code configs and Flow Orchestrator components.
     *   `rules/`: Universal rules (e.g., `01-standard-toml-md-format.md`).
     *   `rules-[mode_slug]/`: Mode-specific pre-loaded rules and KBs.
         *   `00-[mode_slug]-core-principles.md`: Core operational tenets.
         *   `kb/`: Dynamic KB content (procedures, skills, etc., with `README.md` index).
     *   `commander/`:
         *   `docs/`: This documentation.
-        *   `modes/`: Individual mode YAML definition files (e.g., `roo-commander.yaml`).
+        *   `modes/`: Individual mode YAML definition files (e.g., `flow-orchestrator.yaml`).
         *   `scripts/`: Build scripts (e.g., `combine_mode_yamls.js`).
         *   `templates/`: Standardized templates (tasks, sessions, note, summary, learning).
 

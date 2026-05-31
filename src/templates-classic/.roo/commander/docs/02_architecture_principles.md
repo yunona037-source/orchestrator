@@ -1,6 +1,6 @@
-# Roo Commander V8.1: Architecture Principles
+# Flow Orchestrator V8.1: Architecture Principles
 
-## 1. Orchestrator (`roo-commander`) Principles
+## 1. Orchestrator (`flow-orchestrator`) Principles
 
 *   **User Interface:** Acts as the primary conversational interface for the user.
 *   **Intent Understanding:** Focuses on understanding high-level user goals and mapping them to appropriate Manager workflows.

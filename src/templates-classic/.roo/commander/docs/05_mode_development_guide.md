@@ -1,6 +1,6 @@
-# Roo Commander V8.1: Mode Development Guide
+# Flow Orchestrator V8.1: Mode Development Guide
 
-This guide provides concise instructions for creating new custom modes within the Roo Commander V8.1 ecosystem, adhering to the lean, token-efficient principles.
+This guide provides concise instructions for creating new custom modes within the Flow Orchestrator V8.1 ecosystem, adhering to the lean, token-efficient principles.
 
 ## 1. Design Your Mode
 
@@ -114,4 +114,4 @@ node build/combine_mode_yamls.js
 
 ## 7. Deployment
 
-Users will copy the entire `roo-commander` project (including the `/.roo/commander/` and `/.roo/rules-[mode_slug]/` structures) into their project's `.roo/` directory. They will then run the `combine_mode_yamls.js` script to generate the final `.roomodes` file.
+Users will copy the entire `flow-orchestrator` project (including the `/.roo/commander/` and `/.roo/rules-[mode_slug]/` structures) into their project's `.roo/` directory. They will then run the `combine_mode_yamls.js` script to generate the final `.roomodes` file.

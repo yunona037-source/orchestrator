@@ -92,4 +92,4 @@ To establish a consistent, workspace-wide standard for the creation, delegation,
 *   **Effective Coordination:** Facilitates progress monitoring and handoffs between modes.
 *   **Tooling Compatibility:** A standard format is essential for current and future tooling that interacts with MDTM tasks (e.g., external tooling or management interfaces).
 
-**Adherence to this MDTM Task Standard is critical for the structured, traceable, and efficient operation of all workflows within the Roo Commander V8 ecosystem.**
+**Adherence to this MDTM Task Standard is critical for the structured, traceable, and efficient operation of all workflows within the Flow Orchestrator V8 ecosystem.**

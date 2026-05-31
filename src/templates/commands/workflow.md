@@ -371,7 +371,7 @@ Which stage are you in? (1-7 or 'all'):
 
 📋 Current Project State
 ========================
-Project: Roo Commander v9
+Project: Flow Orchestrator v9
 Current Phase: Phase 12 - Workflow Integration
 Stage: Implementation
 Context: 58% full (116k tokens)

@@ -5,7 +5,7 @@ title = "" # (String, Required) User-defined goal or auto-generated title for th
 status = "🟢 Active" # (String, Required) Current status (e.g., "🟢 Active", "⏸️ Paused", "🏁 Completed", "🔴 Error"). << Default: Active >>
 start_time = "" # (Datetime, Required) Timestamp when the session log was created. << Placeholder: Must be generated at runtime >>
 end_time = "" # (Datetime, Optional) Timestamp when the session was marked Paused or Completed. << Placeholder: Optional, set at runtime >>
-coordinator = "" # (String, Required) ID of the Coordinator mode that initiated the session (e.g., "prime-coordinator", "roo-commander"). << Placeholder: Must be set at runtime >>
+coordinator = "" # (String, Required) ID of the Coordinator mode that initiated the session (e.g., "prime-coordinator", "flow-orchestrator"). << Placeholder: Must be set at runtime >>
 related_tasks = [
     # (Array of Strings, Optional) List of formal MDTM Task IDs (e.g., "TASK-...") related to this session.
 ]

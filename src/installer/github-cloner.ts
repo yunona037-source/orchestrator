@@ -164,7 +164,7 @@ export async function cloneSkills(
       chalk.gray(`\n📦 Skills available at: ${chalk.cyan(targetDir)}`)
     );
     console.log(
-      chalk.gray(`Run ${chalk.cyan('roocommander list')} to see all skills.\n`)
+      chalk.gray(`Run ${chalk.cyan('flow-orch list')} to see all skills.\n`)
     );
 
     return {
@@ -261,7 +261,7 @@ export function isValidSkillsDirectory(skillsDir: string): boolean {
         console.log(chalk.gray(`   Expected: ${chalk.cyan(skillsDir + '/<skill-name>/SKILL.md')}`));
         console.log(chalk.gray(`   Found: ${chalk.cyan(nestedPath + '/<skill-name>/SKILL.md')}`));
         console.log(chalk.gray(`\n   This may be due to an older installation bug.`));
-        console.log(chalk.gray(`   Run ${chalk.cyan('roocommander init')} to fix this issue.\n`));
+        console.log(chalk.gray(`   Run ${chalk.cyan('flow-orch init')} to fix this issue.\n`));
       }
     }
 

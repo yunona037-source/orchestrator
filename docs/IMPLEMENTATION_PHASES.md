@@ -1,4 +1,4 @@
-# Implementation Phases: Roo Commander v9
+# Implementation Phases: Flow Orchestrator v9
 
 **Project Type**: CLI Tool + Custom Mode + Marketplace Package
 **Stack**: TypeScript + Node.js (CLI), Roo Code Custom Mode System
@@ -46,7 +46,7 @@
 **Bin Configuration**:
 - Must include `#!/usr/bin/env node` shebang in compiled output
 - `package.json` bin field must point to compiled JS, not TS
-- Pattern: `"bin": { "roo-commander": "./dist/index.js" }`
+- Pattern: `"bin": { "flow-orchestrator": "./dist/index.js" }`
 
 **TypeScript Module Resolution**:
 - Use `"moduleResolution": "node"` for Node.js compatibility
@@ -55,7 +55,7 @@
 
 **npm Link Testing**:
 - Must run `npm link` in project root to test locally
-- Global symlink: `~/.npm-global/bin/roo-commander` → local project
+- Global symlink: `~/.npm-global/bin/flow-orchestrator` → local project
 - Changes require rebuild: `npm run build && npm link`
 
 ### Tasks
@@ -75,13 +75,13 @@
 
 - [ ] `npm run build` compiles TypeScript without errors
 - [ ] `npm link` creates global symlink successfully
-- [ ] `roo-commander --version` shows package version
-- [ ] `roo-commander --help` shows command list
+- [ ] `flow-orch --version` shows package version
+- [ ] `flow-orch --help` shows command list
 - [ ] TypeScript types resolve correctly (no type errors)
 
 ### Exit Criteria
 
-CLI scaffolding complete with TypeScript compilation working. Commands registered in Commander.js. Can run locally via `roo-commander` after npm link.
+CLI scaffolding complete with TypeScript compilation working. Commands registered in Commander.js. Can run locally via `flow-orchestrator` after npm link.
 
 ---
 
@@ -207,19 +207,19 @@ Parser can read any Claude Code skill format from ~/.claude/skills/ and return s
 
 - `src/commands/list.ts` (~120 lines)
   - **Purpose**: Show all available skills with descriptions
-  - **Usage**: `roo-commander list`
+  - **Usage**: `flow-orch list`
   - **Dependencies**: skill-parser, chalk (formatting)
   - **Output**: Table format with name, description, keywords
 
 - `src/commands/read.ts` (~100 lines)
   - **Purpose**: Output skill content to stdout
-  - **Usage**: `roo-commander read <skill-name>`
+  - **Usage**: `flow-orch read <skill-name>`
   - **Dependencies**: skill-parser, fs-extra
   - **Output**: Raw SKILL.md content
 
 - `src/commands/search.ts` (~130 lines)
   - **Purpose**: Find skills by keyword matching
-  - **Usage**: `roo-commander search <keyword>`
+  - **Usage**: `flow-orch search <keyword>`
   - **Dependencies**: skill-parser, chalk
   - **Output**: Filtered skill list
 
@@ -228,11 +228,11 @@ Parser can read any Claude Code skill format from ~/.claude/skills/ and return s
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant CLI as roo-commander
+    participant CLI as flow-orchestrator
     participant P as Parser
     participant FS as File System
 
-    U->>CLI: roo-commander list
+    U->>CLI: flow-orch list
     CLI->>P: findAllSkills()
     P->>FS: Read ~/.claude/skills/
     FS->>P: Skill directories
@@ -296,12 +296,12 @@ sequenceDiagram
 
 ### Verification Criteria
 
-- [ ] `roo-commander list` shows all 68 skills
+- [ ] `flow-orch list` shows all 68 skills
 - [ ] List output includes name, description, keywords
 - [ ] Progress spinner shows during loading
-- [ ] `roo-commander read cloudflare-d1` outputs SKILL.md content
+- [ ] `flow-orch read cloudflare-d1` outputs SKILL.md content
 - [ ] Read command handles skill not found gracefully
-- [ ] `roo-commander search database` shows relevant skills only
+- [ ] `flow-orch search database` shows relevant skills only
 - [ ] Search is case-insensitive
 - [ ] --source flag works with custom directory
 - [ ] Missing skills directory shows helpful error message
@@ -328,13 +328,13 @@ All three commands (list, read, search) work correctly with proper error handlin
 
 - `src/commands/generate-index.ts` (~80 lines)
   - **Purpose**: CLI command to generate index
-  - **Usage**: `roo-commander generate-index`
+  - **Usage**: `flow-orch generate-index`
   - **Dependencies**: skill-parser, index-generator
   - **Output**: Writes to `.roo/rules/01-skills-index.md`
 
 - `src/commands/sync-index.ts` (~100 lines)
   - **Purpose**: Update existing index
-  - **Usage**: `roo-commander sync-index`
+  - **Usage**: `flow-orch sync-index`
   - **Dependencies**: generate-index logic
   - **Output**: Overwrites `.roo/rules/01-skills-index.md`
 
@@ -383,14 +383,14 @@ flowchart TB
 - Optional but recommended
 
 **Index File Location**:
-- Must be in `.roo/rules/` (not `.roo/rules-roo-commander/`)
-- Reason: ALL modes need to see skills index, not just Roo Commander
+- Must be in `.roo/rules/` (not `.roo/rules-flow-orchestrator/`)
+- Reason: ALL modes need to see skills index, not just Flow Orchestrator
 - Must create `.roo/rules/` directory if it doesn't exist
 
 **Usage Instructions Section**:
 - Include at bottom of index
-- How to load a skill: Run `roo-commander read <skill-name>`
-- How to list skills: Run `roo-commander list`
+- How to load a skill: Run `flow-orch read <skill-name>`
+- How to list skills: Run `flow-orch list`
 - When to check for skills: Before implementing from scratch
 
 ### Tasks
@@ -409,7 +409,7 @@ flowchart TB
 
 ### Verification Criteria
 
-- [ ] `roo-commander generate-index` creates `.roo/rules/01-skills-index.md`
+- [ ] `flow-orch generate-index` creates `.roo/rules/01-skills-index.md`
 - [ ] Index includes all 68 skills
 - [ ] Skills are categorized logically (AI, Cloudflare, Frontend, etc.)
 - [ ] Each skill has name, description, keywords
@@ -434,7 +434,7 @@ Index generation works correctly, producing well-formatted markdown file that li
 ### File Map
 
 - `templates/rules/02-cli-usage.md` (~150 lines)
-  - **Purpose**: Teach ALL modes how to use roo-commander CLI
+  - **Purpose**: Teach ALL modes how to use flow-orchestrator CLI
   - **Content**: Command reference, examples, when to use
   - **Used by**: All Roo modes (loaded globally)
 
@@ -449,7 +449,7 @@ Index generation works correctly, producing well-formatted markdown file that li
 
 **Configuration**:
 - Must be placed in `.roo/rules/` (workspace-wide)
-- Not `.roo/rules-roo-commander/` (mode-specific)
+- Not `.roo/rules-flow-orchestrator/` (mode-specific)
 
 ### Gotchas & Known Issues
 
@@ -462,7 +462,7 @@ Index generation works correctly, producing well-formatted markdown file that li
 **Command Examples**:
 - Include full command syntax with flags
 - Show expected output (helps AI understand success)
-- Pattern: "Run `roo-commander list` → shows table of skills"
+- Pattern: "Run `flow-orch list` → shows table of skills"
 
 **When to Check Skills**:
 - Before scaffolding new projects
@@ -505,30 +505,30 @@ Two custom instruction templates ready for deployment. Clear, concise, imperativ
 
 ---
 
-## Phase 6: Roo Commander Mode Configuration
+## Phase 6: Flow Orchestrator Mode Configuration
 
 **Type**: Integration (Roo Code mode)
 **Estimated**: 4-5 hours (~4-5 minutes human time)
-**Files**: `templates/.roomodes-entry.yaml`, `templates/rules-roo-commander/00-core-identity.md`, `templates/rules-roo-commander/01-orchestration.md`, `templates/rules-roo-commander/02-skill-routing.md`
+**Files**: `templates/.roomodes-entry.yaml`, `templates/rules-flow-orchestrator/00-core-identity.md`, `templates/rules-flow-orchestrator/01-orchestration.md`, `templates/rules-flow-orchestrator/02-skill-routing.md`
 
 ### File Map
 
 - `templates/.roomodes-entry.yaml` (~60 lines)
-  - **Purpose**: Roo Commander mode configuration for .roomodes file
+  - **Purpose**: Flow Orchestrator mode configuration for .roomodes file
   - **Key fields**: slug, name, description, roleDefinition, groups, customInstructions
   - **Tool groups**: `workflow` only (new_task, attempt_completion, ask_followup_question)
 
-- `templates/rules-roo-commander/00-core-identity.md` (~250 lines)
+- `templates/rules-flow-orchestrator/00-core-identity.md` (~250 lines)
   - **Purpose**: Role definition and responsibilities
-  - **Content**: What Roo Commander is, what it does, what it doesn't do
+  - **Content**: What Flow Orchestrator is, what it does, what it doesn't do
   - **Philosophy**: Orchestrate, don't execute
 
-- `templates/rules-roo-commander/01-orchestration.md` (~300 lines)
+- `templates/rules-flow-orchestrator/01-orchestration.md` (~300 lines)
   - **Purpose**: How to delegate to built-in modes
   - **Content**: new_task patterns, delegation messages, completion tracking
   - **Examples**: Delegation message templates with skill reminders
 
-- `templates/rules-roo-commander/02-skill-routing.md` (~350 lines)
+- `templates/rules-flow-orchestrator/02-skill-routing.md` (~350 lines)
   - **Purpose**: Keyword-based skill discovery and routing
   - **Content**: Routing logic, keyword matching, multi-skill workflows
   - **Examples**: User request → skills identified → modes delegated
@@ -537,7 +537,7 @@ Two custom instruction templates ready for deployment. Clear, concise, imperativ
 
 ```mermaid
 flowchart TB
-    A[User request] --> B[Roo Commander analyzes]
+    A[User request] --> B[Flow Orchestrator analyzes]
     B --> C[Check .roo/rules/01-skills-index.md]
     C --> D{Match keywords?}
     D -->|Yes| E[Identify relevant skills]
@@ -552,7 +552,7 @@ flowchart TB
     J --> K
     K --> L[Mode executes with skill knowledge]
     L --> M[Return completion summary]
-    M --> N[Roo Commander tracks progress]
+    M --> N[Flow Orchestrator tracks progress]
 ```
 
 ### Critical Dependencies
@@ -567,7 +567,7 @@ flowchart TB
 ### Gotchas & Known Issues
 
 **Tool Groups - Workflow Only**:
-- Roo Commander should NOT have read/edit/command access
+- Flow Orchestrator should NOT have read/edit/command access
 - Forces delegation to execution modes
 - Pattern: `groups: [workflow]` only
 - Reason: Orchestrator stays lightweight, avoids doing work itself
@@ -576,7 +576,7 @@ flowchart TB
 - Must include ALL required context (modes don't inherit parent context)
 - Must remind mode to check skills
 - Must specify clear deliverables
-- Pattern: "Task: [description]\n\nBefore implementing, check skill: run `roo-commander read <skill-name>`\n\nContext: [details]\n\nExpected: [deliverables]"
+- Pattern: "Task: [description]\n\nBefore implementing, check skill: run `flow-orch read <skill-name>`\n\nContext: [details]\n\nExpected: [deliverables]"
 
 **Skill Routing Keywords**:
 - Need to map common terms to skills
@@ -601,7 +601,7 @@ flowchart TB
 - [ ] Define mode metadata (slug, name, description, emoji)
 - [ ] Set tool groups to `workflow` only
 - [ ] Write roleDefinition (orchestrator identity)
-- [ ] Create 00-core-identity.md (what Roo Commander is)
+- [ ] Create 00-core-identity.md (what Flow Orchestrator is)
 - [ ] Document responsibilities and non-responsibilities
 - [ ] Create 01-orchestration.md (how to delegate)
 - [ ] Document new_task patterns
@@ -617,7 +617,7 @@ flowchart TB
 - [ ] .roomodes YAML is valid
 - [ ] Mode has workflow group only (no read/edit/command)
 - [ ] roleDefinition clearly defines orchestrator role
-- [ ] Core identity document explains what Roo Commander does
+- [ ] Core identity document explains what Flow Orchestrator does
 - [ ] Orchestration document has clear delegation patterns
 - [ ] Skill routing document has keyword matching logic
 - [ ] All documents use imperative tone
@@ -626,7 +626,7 @@ flowchart TB
 
 ### Exit Criteria
 
-Roo Commander mode fully configured with YAML entry and three rule documents. Mode is defined as lightweight orchestrator that delegates to execution modes with skill awareness.
+Flow Orchestrator mode fully configured with YAML entry and three rule documents. Mode is defined as lightweight orchestrator that delegates to execution modes with skill awareness.
 
 ---
 
@@ -650,18 +650,18 @@ Roo Commander mode fully configured with YAML entry and three rule documents. Mo
 
 - `templates/commands/list-skills.md` (~60 lines)
   - **Purpose**: Show available skills
-  - **New command**: Specific to Roo Commander
-  - **Content**: Run `roo-commander list`, format output
+  - **New command**: Specific to Flow Orchestrator
+  - **Content**: Run `flow-orch list`, format output
 
 - `templates/commands/load-skill.md` (~80 lines)
   - **Purpose**: Load specific skill into context
-  - **New command**: Specific to Roo Commander
-  - **Content**: Run `roo-commander read <skill>`, parse content
+  - **New command**: Specific to Flow Orchestrator
+  - **Content**: Run `flow-orch read <skill>`, parse content
 
 ### Critical Dependencies
 
 **External**:
-- roo-commander CLI (must be installed globally)
+- flow-orchestrator CLI (must be installed globally)
 - Git (for wrap-session checkpoint)
 
 **Configuration**:
@@ -694,7 +694,7 @@ Roo Commander mode fully configured with YAML entry and three rule documents. Mo
 
 **Load Skill Pattern**:
 - Command should instruct mode to run CLI, not embed skill content
-- Pattern: "Run: `roo-commander read <skill-name>` → Read output → Use knowledge for implementation"
+- Pattern: "Run: `flow-orch read <skill-name>` → Read output → Use knowledge for implementation"
 - Don't try to capture output in command file
 
 ### Tasks
@@ -707,11 +707,11 @@ Roo Commander mode fully configured with YAML entry and three rule documents. Mo
 - [ ] Create continue-session.md template
 - [ ] Port from Claude Code (minimal changes needed)
 - [ ] Create list-skills.md command
-- [ ] Instruct mode to run `roo-commander list`
+- [ ] Instruct mode to run `flow-orch list`
 - [ ] Format output as table
 - [ ] Create load-skill.md command
 - [ ] Accept skill name as parameter
-- [ ] Instruct mode to run `roo-commander read <skill>`
+- [ ] Instruct mode to run `flow-orch read <skill>`
 - [ ] Test command syntax and formatting
 
 ### Verification Criteria
@@ -844,8 +844,8 @@ Five additional slash commands ready for Roo Code. Planning commands adapted fro
 ### File Map
 
 - `src/commands/init.ts` (~200 lines)
-  - **Purpose**: Initialize Roo Commander in project
-  - **Usage**: `roo-commander init`
+  - **Purpose**: Initialize Flow Orchestrator in project
+  - **Usage**: `flow-orch init`
   - **Dependencies**: template-installer, github-cloner, skill-parser, index-generator
   - **Flow**: Check prerequisites → clone skills if needed → generate index → copy templates
 
@@ -853,7 +853,7 @@ Five additional slash commands ready for Roo Code. Planning commands adapted fro
   - **Purpose**: Copy template files to project
   - **Key exports**: `installTemplates(projectRoot: string)`
   - **Dependencies**: fs-extra, path
-  - **Copies**: .roo/rules/, .roo/rules-roo-commander/, .roo/commands/, .roomodes entry
+  - **Copies**: .roo/rules/, .roo/rules-flow-orchestrator/, .roo/commands/, .roomodes entry
 
 - `src/installer/github-cloner.ts` (~120 lines)
   - **Purpose**: Clone skills from GitHub if ~/.claude/skills/ missing
@@ -864,7 +864,7 @@ Five additional slash commands ready for Roo Code. Planning commands adapted fro
 
 ```mermaid
 flowchart TB
-    A[User runs: roo-commander init] --> B{Check ~/.claude/skills/}
+    A[User runs: flow-orch init] --> B{Check ~/.claude/skills/}
     B -->|Exists| C[Use existing skills]
     B -->|Missing| D[Prompt: Clone from GitHub?]
     D -->|Yes| E[git clone jezweb/claude-skills]
@@ -873,7 +873,7 @@ flowchart TB
     C --> G[Generate skills index]
     G --> H[Create .roo/rules/01-skills-index.md]
     H --> I[Copy CLI usage templates]
-    I --> J[Copy Roo Commander mode config]
+    I --> J[Copy Flow Orchestrator mode config]
     J --> K[Copy slash commands]
     K --> L[Create/update .roomodes file]
     L --> M[Success message]
@@ -908,8 +908,8 @@ flowchart TB
 **.roomodes File Handling**:
 - May already exist (user has other custom modes)
 - Must merge, not overwrite
-- Pattern: Read existing YAML → append Roo Commander entry → write back
-- If .roomodes missing, create new file with Roo Commander entry only
+- Pattern: Read existing YAML → append Flow Orchestrator entry → write back
+- If .roomodes missing, create new file with Flow Orchestrator entry only
 
 **Interactive Setup**:
 - Guide user through decisions (clone skills? create .roo/?)
@@ -919,7 +919,7 @@ flowchart TB
 **Idempotent Operation**:
 - If run twice, don't break
 - Check if files exist before overwriting
-- Pattern: Skip if .roo/rules-roo-commander/ exists, or prompt "Reinstall? (y/n)"
+- Pattern: Skip if .roo/rules-flow-orchestrator/ exists, or prompt "Reinstall? (y/n)"
 
 ### Tasks
 
@@ -932,10 +932,10 @@ flowchart TB
 - [ ] Generate skills index (call generate-index logic)
 - [ ] Implement template installer
 - [ ] Copy .roo/rules/ templates (01-skills-index.md, 02-cli-usage.md, 03-skill-patterns.md)
-- [ ] Copy .roo/rules-roo-commander/ templates
+- [ ] Copy .roo/rules-flow-orchestrator/ templates
 - [ ] Copy .roo/commands/ templates (all 9 slash commands)
 - [ ] Handle existing .roomodes file (merge, don't overwrite)
-- [ ] Create .roomodes entry for Roo Commander
+- [ ] Create .roomodes entry for Flow Orchestrator
 - [ ] Add progress spinners for long operations
 - [ ] Show success message with next steps
 - [ ] Make init idempotent (safe to run twice)
@@ -944,13 +944,13 @@ flowchart TB
 
 ### Verification Criteria
 
-- [ ] `roo-commander init` completes successfully in fresh project
+- [ ] `flow-orch init` completes successfully in fresh project
 - [ ] Prompts to clone skills if ~/.claude/skills/ missing
 - [ ] Git clone works correctly (--depth 1 for speed)
 - [ ] Creates .roo/ directory structure
 - [ ] Generates .roo/rules/01-skills-index.md with all skills
 - [ ] Copies .roo/rules/02-cli-usage.md and 03-skill-patterns.md
-- [ ] Copies .roo/rules-roo-commander/ mode rules
+- [ ] Copies .roo/rules-flow-orchestrator/ mode rules
 - [ ] Copies all 9 .roo/commands/ slash commands
 - [ ] Merges with existing .roomodes (doesn't overwrite)
 - [ ] Shows progress spinners during operations
@@ -959,7 +959,7 @@ flowchart TB
 
 ### Exit Criteria
 
-Init command fully functional. Can set up complete Roo Commander system in fresh project with one command. Handles missing skills directory via GitHub clone. Safely merges with existing Roo Code configuration.
+Init command fully functional. Can set up complete Flow Orchestrator system in fresh project with one command. Handles missing skills directory via GitHub clone. Safely merges with existing Roo Code configuration.
 
 ---
 
@@ -1001,7 +1001,7 @@ Init command fully functional. Can set up complete Roo Commander system in fresh
 **README Quick Start**:
 - Must be concise (users want to try it fast)
 - Show 3 steps: Install CLI → Install from marketplace → Run init
-- Include example workflow (user request → Roo Commander → skill loading)
+- Include example workflow (user request → Flow Orchestrator → skill loading)
 
 **Architecture Documentation**:
 - Explain three components clearly (CLI, Custom Instructions, Mode)
@@ -1098,7 +1098,7 @@ flowchart TB
     A[Update package.json version] --> B[Build TypeScript]
     B --> C[Test npm pack locally]
     C --> D[Publish to npm]
-    D --> E[Export Roo Commander mode from Roo Code]
+    D --> E[Export Flow Orchestrator mode from Roo Code]
     E --> F[Create marketplace package]
     F --> G[Test import in fresh project]
     G --> H[Submit to marketplace]
@@ -1111,13 +1111,13 @@ flowchart TB
 - Roo Code (for mode export)
 
 **Configuration**:
-- npm account (jezweb or @jezweb scope)
+- npm account
 - Roo Code marketplace account (TBD)
 
 ### Gotchas & Known Issues
 
 **npm Package Scope**:
-- Should be scoped: `@jezweb/roo-commander`
+- Should be scoped: `flow-orchestrator`
 - Reason: Prevents name collisions, shows ownership
 - Requires npm organization (create if doesn't exist)
 
@@ -1152,8 +1152,8 @@ flowchart TB
 - [ ] Test package locally with `npm pack`
 - [ ] Extract .tgz and verify contents
 - [ ] Publish to npm: `npm publish --access public` (if scoped)
-- [ ] Verify npm page: https://npmjs.com/package/@jezweb/roo-commander
-- [ ] Export Roo Commander mode from Roo Code
+- [ ] Verify npm page: https://npmjs.com/package/flow-orchestrator
+- [ ] Export Flow Orchestrator mode from Roo Code
 - [ ] Test mode import in fresh Roo Code project
 - [ ] Create marketplace package.json
 - [ ] Write marketplace README (description, screenshots)
@@ -1166,8 +1166,8 @@ flowchart TB
 - [ ] Package contents include dist/, templates/, README.md
 - [ ] Package excludes src/, tests/, node_modules/
 - [ ] Published to npm successfully
-- [ ] `npm install -g @jezweb/roo-commander` works
-- [ ] `roo-commander --version` shows 9.0.0
+- [ ] `npm install -g flow-orchestrator` works
+- [ ] `flow-orch --version` shows 9.0.0
 - [ ] Mode exports from Roo Code successfully
 - [ ] Mode imports in fresh project successfully
 - [ ] Marketplace README is clear and complete
@@ -1175,7 +1175,7 @@ flowchart TB
 
 ### Exit Criteria
 
-CLI published to npm as @jezweb/roo-commander@9.0.0. Roo Commander mode exported and tested. Marketplace submission materials ready. Installation process documented and tested.
+CLI published to npm as flow-orchestrator@9.0.0. Flow Orchestrator mode exported and tested. Marketplace submission materials ready. Installation process documented and tested.
 
 ---
 
@@ -1193,7 +1193,7 @@ CLI published to npm as @jezweb/roo-commander@9.0.0. Roo Commander mode exported
 - [ ] Attach assets if needed (none required)
 - [ ] Merge v9 branch to main
 - [ ] Update main branch on GitHub
-- [ ] Submit Roo Commander to Roo Code marketplace
+- [ ] Submit Flow Orchestrator to Roo Code marketplace
 - [ ] Write Reddit post for r/RooCode
 - [ ] Explain problem it solves (skills for Roo Code)
 - [ ] Link to GitHub repo and npm package
@@ -1214,7 +1214,7 @@ CLI published to npm as @jezweb/roo-commander@9.0.0. Roo Commander mode exported
 
 ### Exit Criteria
 
-Roo Commander v9 released to community. Published on npm, GitHub, and Roo Code marketplace. Announced on r/RooCode. Responding to community feedback and issues.
+Flow Orchestrator v9 released to community. Published on npm, GitHub, and Roo Code marketplace. Announced on r/RooCode. Responding to community feedback and issues.
 
 ---
 
@@ -1235,7 +1235,7 @@ Roo Commander v9 released to community. Published on npm, GitHub, and Roo Code m
 ### Key Milestones
 
 - **Phase 3 Complete**: CLI commands functional (list, read, search)
-- **Phase 6 Complete**: Roo Commander mode configured
+- **Phase 6 Complete**: Flow Orchestrator mode configured
 - **Phase 9 Complete**: Full system deployable via `init`
 - **Phase 11 Complete**: Published to npm and marketplace ready
 - **Phase 12 Complete**: Released to community
@@ -1248,7 +1248,7 @@ Each phase sized to fit in single session (2-4 hours estimated, ~2-4 minutes hum
 
 - **Per-phase validation**: Verify functionality against Roo Code standards
 - **Human-in-the-loop testing**: Manual testing in VS Code with Roo Code extension after Phase 10
-- **Integration testing**: Full workflow test (install CLI → run init → use Roo Commander mode) before Phase 12 release
+- **Integration testing**: Full workflow test (install CLI → run init → use Flow Orchestrator mode) before Phase 12 release
 
 ---
 

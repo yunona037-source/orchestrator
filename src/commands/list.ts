@@ -71,14 +71,14 @@ export async function listCommand(options: ListOptions = {}): Promise<void> {
     console.log(chalk.gray('\n─────────────────────────────────────────────'));
     console.log(
       chalk.gray(
-        `\nTo read a skill: ${chalk.white('roo-commander read <skill-name>')}`
+        `\nTo read a skill: ${chalk.white('flow-orch read <skill-name>')}`
       )
     );
     console.log(
-      chalk.gray(`To search skills: ${chalk.white('roo-commander search <keyword>')}`)
+      chalk.gray(`To search skills: ${chalk.white('flow-orch search <keyword>')}`)
     );
     console.log(
-      chalk.gray(`For verbose output: ${chalk.white('roo-commander list --verbose')}\n`)
+      chalk.gray(`For verbose output: ${chalk.white('flow-orch list --verbose')}\n`)
     );
   } catch (error) {
     spinner.fail('Failed to load skills');
@@ -89,7 +89,7 @@ export async function listCommand(options: ListOptions = {}): Promise<void> {
       console.log(chalk.gray('\nSkills directory not found.'));
       console.log(chalk.gray(`Tried: ${skillsDir}`));
       console.log(chalk.gray('\nCreate the directory or specify a custom location:'));
-      console.log(chalk.gray('  roo-commander list --source <path>\n'));
+      console.log(chalk.gray('  flow-orch list --source <path>\n'));
     }
 
     process.exit(1);

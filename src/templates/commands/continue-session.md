@@ -311,4 +311,4 @@ Ready to continue work.
 
 ---
 
-*This command is part of Roo Commander v9.0.0 - Use /wrap-session before ending your session*
+*This command is part of Flow Orchestrator v9.0.0 - Use /wrap-session before ending your session*

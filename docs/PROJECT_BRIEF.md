@@ -1,7 +1,7 @@
-# Roo Commander v9: Project Brief
+# Flow Orchestrator v9: Project Brief
 
-**Project Name**: Roo Commander v9 - Claude Skills Bridge
-**Repository**: https://github.com/jezweb/roo-commander (v9 branch)
+**Project Name**: Flow Orchestrator v9 - Claude Skills Bridge
+**Repository**: https://github.com/yunona037-source/orchestrator (v9 branch)
 **Target Audience**: Roo Code VS Code extension users
 **Project Type**: CLI Tool + Custom Mode + Marketplace Package
 **Timeline**: 28-36 hours (~28-36 minutes human time)
@@ -10,16 +10,16 @@
 
 ## Executive Summary
 
-Roo Commander v9 is a complete rebuild that solves the "skills for Roo Code" problem identified by the community. It brings Claude Code's 68 production-tested skills to Roo Code users through a lightweight CLI tool, intelligent orchestrator mode, and shared knowledge system.
+Flow Orchestrator v9 is a complete rebuild that solves the "skills for Roo Code" problem identified by the community. It brings Claude Code's 68 production-tested skills to Roo Code users through a lightweight CLI tool, intelligent orchestrator mode, and shared knowledge system.
 
-**Core Innovation**: Instead of converting skills to modes (complex handoffs), Roo Commander teaches ALL Roo modes how to dynamically load skill knowledge via CLI, then delegates work to appropriate built-in modes (Code, Architect, Debug).
+**Core Innovation**: Instead of converting skills to modes (complex handoffs), Flow Orchestrator teaches ALL Roo modes how to dynamically load skill knowledge via CLI, then delegates work to appropriate built-in modes (Code, Architect, Debug).
 
 ---
 
 ## Problem Statement
 
 ### Original Challenge (6 months ago)
-Roo Commander v8.1 was attempting to build a "dense knowledge base" system but struggled with:
+Flow Orchestrator v8.1 was attempting to build a "dense knowledge base" system but struggled with:
 - How to structure reusable knowledge
 - Token efficiency in multi-agent orchestration
 - Complex handoff rules between modes
@@ -47,16 +47,16 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 
 ### Three-Part System
 
-#### 1. CLI Tool (`@jezweb/roo-commander`)
+#### 1. CLI Tool (`flow-orchestrator`)
 **Purpose**: Read skills from `~/.claude/skills/` and make them accessible to Roo Code
 
 **Commands**:
-- `roo-commander list` - Show all 68 skills with descriptions
-- `roo-commander read <skill>` - Output skill content to stdout
-- `roo-commander search <keyword>` - Find skills by keyword
-- `roo-commander generate-index` - Create skills index for custom instructions
-- `roo-commander init` - Set up complete Roo Commander system
-- `roo-commander sync-index` - Update skills index after changes
+- `flow-orch list` - Show all 68 skills with descriptions
+- `flow-orch read <skill>` - Output skill content to stdout
+- `flow-orch search <keyword>` - Find skills by keyword
+- `flow-orch generate-index` - Create skills index for custom instructions
+- `flow-orch init` - Set up complete Flow Orchestrator system
+- `flow-orch sync-index` - Update skills index after changes
 
 **Tech Stack**: TypeScript, Commander.js, Node.js
 
@@ -65,12 +65,12 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 
 **Files**:
 - `01-skills-index.md` - Auto-generated list of 68 skills with keywords (ALL modes see this)
-- `02-cli-usage.md` - How to use roo-commander CLI
+- `02-cli-usage.md` - How to use flow-orchestrator CLI
 - `03-skill-patterns.md` - When to check skills before implementing
 
 **Key Insight**: Custom instructions load into ALL modes automatically, so Code/Architect/Debug modes inherit skill awareness.
 
-#### 3. Roo Commander Mode (`.roomodes` + `.roo/rules-roo-commander/`)
+#### 3. Flow Orchestrator Mode (`.roomodes` + `.roo/rules-flow-orchestrator/`)
 **Purpose**: Lightweight orchestrator that analyzes requests and delegates to built-in modes
 
 **Responsibilities**:
@@ -107,9 +107,9 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 - Context stays in proper execution modes
 
 ### Why Global Rules for Skills Index?
-**Decision**: Put skills index in `.roo/rules/` not `.roo/rules-roo-commander/`
+**Decision**: Put skills index in `.roo/rules/` not `.roo/rules-flow-orchestrator/`
 **Rationale**:
-- ALL modes need skill awareness (not just Roo Commander)
+- ALL modes need skill awareness (not just Flow Orchestrator)
 - User might be in Code mode and want to check skills
 - Shared knowledge reduces duplication
 - Easier to keep in sync (one file)
@@ -129,21 +129,21 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 ### Workflow 1: New Roo Code User Discovers Skills
 
 ```
-1. User installs CLI: npm install -g @jezweb/roo-commander
-2. User installs Roo Commander from marketplace (one-click)
-3. User runs in project: roo-commander init
+1. User installs CLI: npm install -g flow-orchestrator
+2. User installs Flow Orchestrator from marketplace (one-click)
+3. User runs in project: flow-orch init
 4. System generates:
    - .roo/rules/01-skills-index.md (68 skills)
    - .roo/rules/02-cli-usage.md
    - .roo/rules/03-skill-patterns.md
-   - .roo/rules-roo-commander/ (mode rules)
+   - .roo/rules-flow-orchestrator/ (mode rules)
    - .roomodes entry
    - .roo/commands/ (9 slash commands)
-5. User asks Roo Commander: "Set up Cloudflare D1"
-6. Roo Commander:
+5. User asks Flow Orchestrator: "Set up Cloudflare D1"
+6. Flow Orchestrator:
    - Checks skills index → finds cloudflare-d1
    - Delegates to Code mode with message:
-     "Load skill: roo-commander read cloudflare-d1, then implement D1 setup"
+     "Load skill: flow-orch read cloudflare-d1, then implement D1 setup"
 7. Code mode:
    - Runs CLI command
    - Loads skill knowledge
@@ -156,14 +156,14 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 ```
 1. User already has ~/.claude/skills/ (68 skills)
 2. User already knows /plan-project, /wrap-session workflows
-3. Installs Roo Commander
-4. Runs: roo-commander init
+3. Installs Flow Orchestrator
+4. Runs: flow-orch init
 5. System detects existing skills, uses them
 6. Slash commands work similarly (but as instruction templates)
 7. Shared conventions: SESSION.md, IMPLEMENTATION_PHASES.md work across both tools
 8. Hybrid workflow:
    - Use Claude Code for heavy planning (/plan-project with automation)
-   - Switch to Roo Commander for execution (VS Code integration)
+   - Switch to Flow Orchestrator for execution (VS Code integration)
    - Both reference same planning docs
 ```
 
@@ -171,10 +171,10 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 
 ```
 1. User has custom skills in ~/.claude/skills/my-custom-skill/
-2. User runs: roo-commander sync-index
+2. User runs: flow-orch sync-index
 3. Skills index updates to include custom skill
 4. All Roo modes can now access custom skill
-5. Roo Commander routes to it based on keywords
+5. Flow Orchestrator routes to it based on keywords
 ```
 
 ---
@@ -196,13 +196,13 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 - Result: Direct port, works identically
 
 **`/list-skills`**:
-- New command specific to Roo Commander
-- Instruction: Run `roo-commander list`, format output
+- New command specific to Flow Orchestrator
+- Instruction: Run `flow-orch list`, format output
 - Simple wrapper around CLI
 
 **`/load-skill`**:
-- New command specific to Roo Commander
-- Instruction: Run `roo-commander read <skill>`, load into context
+- New command specific to Flow Orchestrator
+- Instruction: Run `flow-orch read <skill>`, load into context
 - Accepts skill name as parameter
 
 ### Adapted Ports (Significant Changes)
@@ -242,14 +242,14 @@ Reddit post on r/RooCode asked: "Has anyone set up a 'Claude Skills' like system
 
 ### CLI Tool Architecture
 
-**Package**: `@jezweb/roo-commander`
+**Package**: `flow-orchestrator`
 **Language**: TypeScript
 **Build**: TSC to CommonJS
 **Distribution**: npm (global install)
 
 **Project Structure**:
 ```
-roo-commander/
+flow-orchestrator/
 ├── src/
 │   ├── index.ts              # CLI entry point
 │   ├── commands/
@@ -257,14 +257,14 @@ roo-commander/
 │   │   ├── read.ts           # Read skill content
 │   │   ├── search.ts         # Search skills
 │   │   ├── generate-index.ts # Generate skills index
-│   │   ├── init.ts           # Initialize Roo Commander
+│   │   ├── init.ts           # Initialize Flow Orchestrator
 │   │   └── sync-index.ts     # Update skills index
 │   ├── parser/
 │   │   ├── skill-parser.ts   # Parse SKILL.md files
 │   │   └── types.ts          # TypeScript interfaces
 │   └── templates/
 │       ├── rules/            # Custom instructions templates
-│       ├── rules-roo-commander/  # Mode-specific rules
+│       ├── rules-flow-orchestrator/  # Mode-specific rules
 │       ├── commands/         # Slash commands
 │       └── roomodes.yaml     # Mode configuration
 ├── package.json
@@ -288,7 +288,7 @@ roo-commander/
 
 **Skills Index Structure**:
 ```markdown
-# Roo Commander Skills Index
+# Flow Orchestrator Skills Index
 
 ## AI & LLM Integration (8 skills)
 - **claude-api**: Claude API integration patterns [Keywords: claude, anthropic, api]
@@ -300,8 +300,8 @@ roo-commander/
 [...]
 
 ## Usage
-To load a skill: run `/load-skill <skill-name>` or `roo-commander read <skill-name>`
-To list all skills: run `/list-skills` or `roo-commander list`
+To load a skill: run `/load-skill <skill-name>` or `flow-orch read <skill-name>`
+To list all skills: run `/list-skills` or `flow-orch list`
 ```
 
 ### Mode Configuration
@@ -311,11 +311,11 @@ To list all skills: run `/list-skills` or `roo-commander list`
 
 ```yaml
 customModes:
-  - slug: roo-commander
-    name: 🪃 Roo Commander
+  - slug: flow-orchestrator
+    name: 🪃 Flow Orchestrator
     description: Intelligent orchestrator that routes tasks to specialized modes with skill knowledge
     roleDefinition: |
-      You are Roo Commander, a strategic orchestrator for complex development tasks.
+      You are Flow Orchestrator, a strategic orchestrator for complex development tasks.
       Your primary role is to analyze requests, identify relevant skills, and delegate
       to appropriate execution modes (Code, Architect, Debug) with skill knowledge.
 
@@ -339,7 +339,7 @@ customModes:
 - ✅ Skills index auto-generates accurately
 - ✅ Init command creates complete setup (< 30 seconds)
 - ✅ All 9 slash commands functional
-- ✅ Roo Commander mode delegates correctly
+- ✅ Flow Orchestrator mode delegates correctly
 - ✅ Zero handoff errors or context loss
 
 ### Community Metrics
@@ -379,9 +379,9 @@ customModes:
 **Impact**: Users abandon before trying
 **Mitigation**:
 - Clear installation instructions
-- Support npx (no install): `npx @jezweb/roo-commander`
+- Support npx (no install): `npx flow-orchestrator`
 - Video walkthrough
-- One-command setup: `npx @jezweb/roo-commander init`
+- One-command setup: `npx flow-orchestrator init`
 
 ### Risk 4: Slash Commands Feel Broken
 **Impact**: Users expect automation, get manual instructions
@@ -415,7 +415,7 @@ customModes:
 
 ### Automated Planning
 - Keep heavy automation in Claude Code
-- Roo Commander focuses on execution
+- Flow Orchestrator focuses on execution
 - Hybrid workflow is the solution
 
 ### Custom Skill Creation UI
@@ -454,7 +454,7 @@ customModes:
 
 ### Week 2: Templates & Mode (Phases 3-4)
 - Custom instructions templates
-- Roo Commander mode complete
+- Flow Orchestrator mode complete
 - Orchestration patterns defined
 
 ### Week 3: Slash Commands (Phases 5-7)
@@ -485,7 +485,7 @@ customModes:
 ## References
 
 - Reddit discussion: https://www.reddit.com/r/RooCode/comments/1o9kxr2/skills_for_roo_code/
-- Roo Commander v8.1: https://github.com/jezweb/roo-commander/tree/v8.1
+- Flow Orchestrator v8.1: https://github.com/yunona037-source/orchestrator/tree/v8.1
 - Claude Skills repository: https://github.com/jezweb/claude-skills
 - Roo Code documentation: https://docs.roocode.com
 - Claude Code skills (local): ~/.claude/skills/
@@ -494,5 +494,4 @@ customModes:
 
 **Document Version**: 1.0
 **Last Updated**: 2025-11-08
-**Author**: Jeremy Dawes (with Claude Code)
 **Status**: Ready for Implementation Planning

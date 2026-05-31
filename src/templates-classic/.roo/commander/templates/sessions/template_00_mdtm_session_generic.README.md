@@ -35,7 +35,7 @@ The following fields are defined within the `+++` TOML block:
     *   *Set at runtime when applicable.*
 
 *   **`coordinator`** (String, Required)
-    *   The slug of the Coordinator mode (e.g., "prime-coordinator", "roo-commander") that initiated and manages this session.
+    *   The slug of the Coordinator mode (e.g., "prime-coordinator", "flow-orchestrator") that initiated and manages this session.
     *   *Must be set at runtime.*
 
 *   **`related_tasks`** (Array of Strings, Optional)

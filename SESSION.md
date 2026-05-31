@@ -12,8 +12,8 @@
 **Published to npm**: v9.0.4 (after 4 critical bugfix releases)
 
 **Latest Release** (v9.0.4):
-- ✅ Published to npm: https://www.npmjs.com/package/roocommander
-- ✅ GitHub release: https://github.com/jezweb/roo-commander/releases/tag/v9.0.4
+- ✅ Published to npm: https://www.npmjs.com/package/flow-orchestrator
+- ✅ GitHub release: https://github.com/yunona037-source/orchestrator/releases/tag/v9.0.4
 - ✅ All schema violations fixed (whenToUse added, customInstructions corrected)
 - ✅ Mode should now appear in Roo Code extension
 - ✅ Documentation complete
@@ -26,7 +26,7 @@
 - ✅ GitHub Cloner (skills repository setup)
 - ✅ Custom Instructions (3 template files)
 - ✅ Slash Commands (9 complete commands)
-- ✅ Roo Commander Mode (orchestration + skill routing - FIXED v9.0.2, v9.0.3)
+- ✅ Flow Orchestrator Mode (orchestration + skill routing - FIXED v9.0.2, v9.0.3)
 - ✅ Comprehensive Documentation (README + CHANGELOG)
 
 **Releases (2025-11-10 to 2025-11-11)**:
@@ -63,7 +63,7 @@
 **Summary**: npm project initialized with TypeScript, Commander.js CLI structure, all dependencies installed, build working, npm link tested successfully.
 
 **Files Created**:
-- package.json (@jezweb/roo-commander v9.0.0)
+- package.json (flow-orchestrator v9.0.0)
 - tsconfig.json (ES2020, CommonJS)
 - src/index.ts (CLI entry with shebang)
 - src/cli.ts (Commander.js with 6 command placeholders)
@@ -72,8 +72,8 @@
 **Verification Results**:
 - ✅ `npm run build` compiles without errors
 - ✅ `npm link` created global symlink
-- ✅ `roo-commander --version` shows 9.0.0
-- ✅ `roo-commander --help` shows all 6 commands
+- ✅ `flow-orch --version` shows 9.0.0
+- ✅ `flow-orch --help` shows all 6 commands
 - ✅ TypeScript types resolve correctly
 
 ## Phase 2: Skill Parser ✅
@@ -114,11 +114,11 @@
 - src/cli.ts (wired all three commands with --source and --verbose options)
 
 **Verification Results**:
-- ✅ `roo-commander list` shows all 62 skills with name, description, keywords
+- ✅ `flow-orch list` shows all 62 skills with name, description, keywords
 - ✅ Loading spinners display during skill discovery
-- ✅ `roo-commander read "Cloudflare D1 Database"` outputs full SKILL.md content
+- ✅ `flow-orch read "Cloudflare D1 Database"` outputs full SKILL.md content
 - ✅ Skill not found shows helpful error with similar suggestions
-- ✅ `roo-commander search cloudflare` finds 45 matching skills
+- ✅ `flow-orch search cloudflare` finds 45 matching skills
 - ✅ Case-insensitive fuzzy matching works correctly
 - ✅ --source flag works with custom directory
 - ✅ --verbose flag shows full descriptions
@@ -140,7 +140,7 @@
 - src/cli.ts (wired both commands with --source and --output options)
 
 **Verification Results**:
-- ✅ `roo-commander generate-index` creates .roo/rules/01-skills-index.md
+- ✅ `flow-orch generate-index` creates .roo/rules/01-skills-index.md
 - ✅ Index includes all 62 skills (299 lines total)
 - ✅ Skills categorized into 7 logical groups (AI, Cloudflare, Frontend, etc.)
 - ✅ Each skill has name, description, keywords
@@ -156,7 +156,7 @@
 **Type**: Templates | **Completed**: 2025-11-08
 **Spec**: `docs/IMPLEMENTATION_PHASES.md#phase-5-custom-instructions-templates`
 
-**Summary**: Created 2 comprehensive template files that teach ALL Roo Code modes how to use roo-commander CLI and when to check for skills before implementing features. Templates are ready for Phase 9 init command to copy to .roo/rules/.
+**Summary**: Created 2 comprehensive template files that teach ALL Roo Code modes how to use flow-orchestrator CLI and when to check for skills before implementing features. Templates are ready for Phase 9 init command to copy to .roo/rules/.
 
 **Files Created**:
 - src/templates/rules/02-cli-usage.md (CLI command reference, 341 lines)
@@ -174,23 +174,23 @@
 - ✅ Markdown formatting is valid (headings, lists, code blocks)
 - ✅ Templates ready for init command to copy in Phase 9
 
-## Phase 6: Roo Commander Mode Configuration ✅
+## Phase 6: Flow Orchestrator Mode Configuration ✅
 **Type**: Integration | **Completed**: 2025-11-09
-**Spec**: `docs/IMPLEMENTATION_PHASES.md#phase-6-roo-commander-mode-configuration`
+**Spec**: `docs/IMPLEMENTATION_PHASES.md#phase-6-flow-orchestrator-mode-configuration`
 
-**Summary**: Created complete Roo Commander mode configuration with YAML entry and three rule documents. Mode defined as lightweight orchestrator that delegates to execution modes with automatic skill discovery.
+**Summary**: Created complete Flow Orchestrator mode configuration with YAML entry and three rule documents. Mode defined as lightweight orchestrator that delegates to execution modes with automatic skill discovery.
 
 **Files Created**:
 - src/templates/.roomodes-entry.yaml (53 lines) - Mode configuration for .roomodes
-- src/templates/rules-roo-commander/00-core-identity.md (343 lines) - Role and responsibilities
-- src/templates/rules-roo-commander/01-orchestration.md (598 lines) - Delegation patterns
-- src/templates/rules-roo-commander/02-skill-routing.md (504 lines) - Keyword-based routing
+- src/templates/rules-flow-orchestrator/00-core-identity.md (343 lines) - Role and responsibilities
+- src/templates/rules-flow-orchestrator/01-orchestration.md (598 lines) - Delegation patterns
+- src/templates/rules-flow-orchestrator/02-skill-routing.md (504 lines) - Keyword-based routing
 
 **Verification Results**:
 - ✅ YAML syntax valid (tested with Python yaml.safe_load)
 - ✅ Mode has workflow group only (no read/edit/command access)
 - ✅ roleDefinition clearly defines orchestrator role
-- ✅ Core identity explains what Roo Commander does/doesn't do
+- ✅ Core identity explains what Flow Orchestrator does/doesn't do
 - ✅ Orchestration document has 6 delegation message templates
 - ✅ Skill routing has routing tables for 8 technology categories
 - ✅ All documents use imperative tone for AI agents
@@ -213,8 +213,8 @@
 - ✅ All commands have valid YAML frontmatter (description + argument-hint)
 - ✅ wrap-session provides step-by-step SESSION.md update workflow
 - ✅ continue-session reads SESSION.md and resumes from Next Action
-- ✅ list-skills runs roo-commander list with verbose output
-- ✅ load-skill accepts skill name parameter and runs roo-commander read
+- ✅ list-skills runs flow-orch list with verbose output
+- ✅ load-skill accepts skill name parameter and runs flow-orch read
 - ✅ Commands use imperative instruction style (no automation, user-approved)
 - ✅ No Claude Code-specific features (TodoWrite, skills removed)
 - ✅ Markdown structure valid (H1 title, H2+ sections)
@@ -248,7 +248,7 @@
 **Type**: Integration | **Completed**: 2025-11-09
 **Spec**: `docs/IMPLEMENTATION_PHASES.md#phase-9-cli-init-command`
 
-**Summary**: Implemented complete init command that sets up Roo Commander in any project. Handles skills directory cloning, template installation, skills index generation, and .roomodes merging.
+**Summary**: Implemented complete init command that sets up Flow Orchestrator in any project. Handles skills directory cloning, template installation, skills index generation, and .roomodes merging.
 
 **Files Created**:
 - src/installer/github-cloner.ts (204 lines) - Clone skills from GitHub
@@ -261,7 +261,7 @@
 **Verification Results**:
 - ✅ TypeScript compilation successful (npm run build)
 - ✅ github-cloner handles missing ~/.claude/skills/ with git clone --depth 1
-- ✅ template-installer copies all templates (.roo/rules, rules-roo-commander, commands)
+- ✅ template-installer copies all templates (.roo/rules, rules-flow-orchestrator, commands)
 - ✅ .roomodes file merging (doesn't overwrite existing modes)
 - ✅ Skills index generation integrated
 - ✅ Idempotent operation (checks if already installed)

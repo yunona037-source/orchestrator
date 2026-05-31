@@ -1,4 +1,4 @@
-# Architecture: Roo Commander v9
+# Architecture: Flow Orchestrator v9
 
 **System Type**: CLI Tool + Custom Mode + Shared Knowledge System
 **Deployment**: npm (CLI), Roo Code Marketplace (Mode)
@@ -29,7 +29,7 @@
 │  │  └─────────────────────────────────────────────┘  │ │
 │  │                                                    │ │
 │  │  ┌─────────────────────────────────────────────┐  │ │
-│  │  │ 🪃 Roo Commander Mode (Orchestrator)         │  │ │
+│  │  │ 🪃 Flow Orchestrator Mode (Orchestrator)         │  │ │
 │  │  │ • Analyzes user requests                    │  │ │
 │  │  │ • Identifies relevant skills                │  │ │
 │  │  │ • Delegates to Code/Architect/Debug         │  │ │
@@ -48,7 +48,7 @@
 └─────────────────────────────────────────────────────────┘
                           ↓ Executes
               ┌───────────────────────────┐
-              │   roo-commander CLI       │
+              │   flow-orchestrator CLI       │
               │   (npm global package)    │
               │                           │
               │   Commands:               │
@@ -76,29 +76,29 @@
 
 ## Component Breakdown
 
-### 1. CLI Tool (`@jezweb/roo-commander`)
+### 1. CLI Tool (`flow-orchestrator`)
 
 **Purpose**: Bridge between Claude Code skills and Roo Code modes
 
 **Technology**: TypeScript + Node.js
 **Distribution**: npm (global install)
-**Location**: `~/.npm-global/bin/roo-commander`
+**Location**: `~/.npm-global/bin/flow-orchestrator`
 
 **Responsibilities**:
 - Read skills from `~/.claude/skills/` directory
 - Parse YAML frontmatter + markdown content
 - Output skill content to stdout
 - Generate skills index markdown
-- Initialize Roo Commander setup in projects
+- Initialize Flow Orchestrator setup in projects
 
 **Key Commands**:
 ```bash
-roo-commander list              # Show all 68 skills
-roo-commander read cloudflare-d1 # Output skill content
-roo-commander search database    # Find relevant skills
-roo-commander generate-index    # Create skills index
-roo-commander sync-index        # Update skills index
-roo-commander init              # Set up in project
+flow-orch list              # Show all 68 skills
+flow-orch read cloudflare-d1 # Output skill content
+flow-orch search database    # Find relevant skills
+flow-orch generate-index    # Create skills index
+flow-orch sync-index        # Update skills index
+flow-orch init              # Set up in project
 ```
 
 **Why CLI Instead of MCP?**
@@ -114,7 +114,7 @@ roo-commander init              # Set up in project
 
 **Location**: Project workspace (`.roo/rules/`)
 **Format**: Numbered markdown files
-**Loaded by**: All modes automatically (Code, Architect, Debug, Roo Commander)
+**Loaded by**: All modes automatically (Code, Architect, Debug, Flow Orchestrator)
 
 **Files**:
 
@@ -125,7 +125,7 @@ roo-commander init              # Set up in project
 - Teaches modes what skills exist and when to use them
 
 **02-cli-usage.md** (~150 lines):
-- How to use `roo-commander` CLI commands
+- How to use `flow-orchestrator` CLI commands
 - Command syntax and examples
 - Expected output format
 - Troubleshooting common issues
@@ -137,7 +137,7 @@ roo-commander init              # Set up in project
 - Examples of skill-aware vs manual implementation
 
 **Why Global Rules?**
-- ALL modes need skill awareness (not just Roo Commander)
+- ALL modes need skill awareness (not just Flow Orchestrator)
 - User might be in Code mode directly and want to check skills
 - Reduces duplication (one source of truth)
 - Easier to keep in sync (update one file)
@@ -147,11 +147,11 @@ roo-commander init              # Set up in project
 2. Workspace rules (`.roo/rules/`) - project-specific
 3. Mode-specific rules (`.roo/rules-{slug}/`) - mode behavior
 
-### 3. Roo Commander Mode (Custom Mode)
+### 3. Flow Orchestrator Mode (Custom Mode)
 
 **Purpose**: Intelligent orchestrator that routes tasks to execution modes
 
-**Configuration**: `.roomodes` entry + `.roo/rules-roo-commander/`
+**Configuration**: `.roomodes` entry + `.roo/rules-flow-orchestrator/`
 **Tool Access**: `workflow` group only (new_task, attempt_completion, ask_followup_question)
 **No Access**: read, edit, command (forces delegation)
 
@@ -167,7 +167,7 @@ roo-commander init              # Set up in project
 
 **00-core-identity.md** (~250 lines):
 - Role definition: Strategic orchestrator
-- What Roo Commander does (analyze, route, delegate)
+- What Flow Orchestrator does (analyze, route, delegate)
 - What it doesn't do (no direct implementation)
 - Philosophy: Orchestrate, don't execute
 
@@ -230,18 +230,18 @@ roo-commander init              # Set up in project
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant RC as Roo Commander
+    participant RC as Flow Orchestrator
     participant SI as Skills Index
     participant CM as Code Mode
-    participant CLI as roo-commander CLI
+    participant CLI as flow-orchestrator CLI
     participant FS as ~/.claude/skills/
 
     U->>RC: "Set up Cloudflare D1 database"
     RC->>SI: Check .roo/rules/01-skills-index.md
     SI->>RC: Match: cloudflare-d1 (keywords: d1, database, cloudflare)
     RC->>RC: Determine mode: Code (implementation task)
-    RC->>CM: new_task("Implement D1 setup. Load skill: roo-commander read cloudflare-d1")
-    CM->>CLI: Execute: roo-commander read cloudflare-d1
+    RC->>CM: new_task("Implement D1 setup. Load skill: flow-orch read cloudflare-d1")
+    CM->>CLI: Execute: flow-orch read cloudflare-d1
     CLI->>FS: Read ~/.claude/skills/cloudflare-d1/SKILL.md
     FS->>CLI: Skill content
     CLI->>CM: Output to stdout
@@ -255,7 +255,7 @@ sequenceDiagram
 
 ```mermaid
 flowchart TB
-    A[User: roo-commander init] --> B{Check ~/.claude/skills/}
+    A[User: flow-orch init] --> B{Check ~/.claude/skills/}
     B -->|Exists| C[Use existing skills]
     B -->|Missing| D[Prompt: Clone from GitHub?]
     D -->|Yes| E[git clone jezweb/claude-skills]
@@ -269,11 +269,11 @@ flowchart TB
     J --> L[Copy templates]
     K --> L
     L --> M[Copy 02-cli-usage.md, 03-skill-patterns.md]
-    M --> N[Copy .roo/rules-roo-commander/]
+    M --> N[Copy .roo/rules-flow-orchestrator/]
     N --> O[Copy .roo/commands/ slash commands]
     O --> P{Check .roomodes file}
-    P -->|Exists| Q[Merge Roo Commander entry]
-    P -->|Missing| R[Create with Roo Commander entry]
+    P -->|Exists| Q[Merge Flow Orchestrator entry]
+    P -->|Missing| R[Create with Flow Orchestrator entry]
     Q --> S[Success message]
     R --> S
 ```
@@ -282,7 +282,7 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    A["User: Setup auth + database"] --> B[Roo Commander analyzes]
+    A["User: Setup auth + database"] --> B[Flow Orchestrator analyzes]
     B --> C[Check skills index]
     C --> D{Match keywords}
     D -->|auth| E[better-auth skill]
@@ -293,12 +293,12 @@ flowchart TB
     H --> I[Code mode loads better-auth skill]
     I --> J[Implement auth setup]
     J --> K["Complete: Auth configured"]
-    K --> L[Roo Commander tracks progress]
+    K --> L[Flow Orchestrator tracks progress]
     L --> M["Delegate to Code mode: cloudflare-d1"]
     M --> N[Code mode loads cloudflare-d1 skill]
     N --> O[Implement D1 setup]
     O --> P["Complete: Database configured"]
-    P --> Q[Roo Commander aggregates]
+    P --> Q[Flow Orchestrator aggregates]
     Q --> R["Report: Auth + DB complete"]
 ```
 
@@ -336,7 +336,7 @@ flowchart TB
 **Problem**: Where should the skills index live?
 
 **Options Considered**:
-1. In Roo Commander mode rules (`.roo/rules-roo-commander/`)
+1. In Flow Orchestrator mode rules (`.roo/rules-flow-orchestrator/`)
 2. In global rules (`.roo/rules/`)
 3. Generated on-demand (no persistent file)
 
@@ -344,7 +344,7 @@ flowchart TB
 
 **Rationale**:
 - **Universal access**: ALL modes see the skills index (Code, Architect, Debug)
-- **Direct skill usage**: User in Code mode can check skills without Roo Commander
+- **Direct skill usage**: User in Code mode can check skills without Flow Orchestrator
 - **Reduced duplication**: One index, not copied to multiple locations
 - **Easy to sync**: Update one file when skills change
 - **Better DX**: User can open `.roo/rules/01-skills-index.md` to browse skills
@@ -357,7 +357,7 @@ flowchart TB
 
 ### Decision 3: Orchestrator with Minimal Tools
 
-**Problem**: What tools should Roo Commander have access to?
+**Problem**: What tools should Flow Orchestrator have access to?
 
 **Options Considered**:
 1. Full access (read, edit, command, workflow)
@@ -394,7 +394,7 @@ flowchart TB
 - **Preserve workflow structure**: Users get proven workflows even without automation
 - **Realistic scope**: Don't try to rebuild Claude Code's automation layer
 - **Better than nothing**: Structured instructions > starting from scratch
-- **Hybrid approach**: Users can use Claude Code for heavy automation, Roo Commander for execution
+- **Hybrid approach**: Users can use Claude Code for heavy automation, Flow Orchestrator for execution
 - **Clear expectations**: Documentation states "instruction templates, not automation"
 
 **Trade-offs**:
@@ -408,7 +408,7 @@ flowchart TB
 
 ## Integration Patterns
 
-### Pattern 1: Hybrid Claude Code + Roo Commander Workflow
+### Pattern 1: Hybrid Claude Code + Flow Orchestrator Workflow
 
 **Scenario**: User wants to leverage both tools
 
@@ -418,10 +418,10 @@ flowchart TB
    - Generates IMPLEMENTATION_PHASES.md, DATABASE_SCHEMA.md, API_ENDPOINTS.md
    - Uses project-planning skill for automation
 
-2. **Execution Phase** (Roo Commander):
+2. **Execution Phase** (Flow Orchestrator):
    - Open project in VS Code with Roo Code extension
    - Planning docs already exist (created by Claude Code)
-   - Use Roo Commander to implement phases
+   - Use Flow Orchestrator to implement phases
    - Use `/wrap-session`, `/continue-session` for progress tracking
 
 3. **Shared Artifacts**:
@@ -434,19 +434,19 @@ flowchart TB
 - Seamless handoff (shared conventions)
 - Use right tool for right job
 
-### Pattern 2: Roo Commander Standalone
+### Pattern 2: Flow Orchestrator Standalone
 
 **Scenario**: User only has Roo Code, no Claude Code CLI
 
 **Workflow**:
 1. **Installation**:
-   - Install CLI: `npm install -g @jezweb/roo-commander`
+   - Install CLI: `npm install -g flow-orchestrator`
    - Install mode from marketplace (one-click)
-   - Run: `roo-commander init` in project
+   - Run: `flow-orch init` in project
 
 2. **Usage**:
-   - Ask Roo Commander for help
-   - Roo Commander checks skills index
+   - Ask Flow Orchestrator for help
+   - Flow Orchestrator checks skills index
    - Delegates to Code mode with skill loading instructions
    - Code mode uses CLI to load skills
 
@@ -457,7 +457,7 @@ flowchart TB
 
 **Benefits**:
 - Doesn't require Claude Code CLI
-- Full skill access via roo-commander CLI
+- Full skill access via flow-orchestrator CLI
 - Self-contained workflow
 
 ### Pattern 3: Direct Skill Usage in Code Mode
@@ -468,11 +468,11 @@ flowchart TB
 1. **User types**: "Check if there's a skill for Tailwind v4"
 2. **Code mode**: Reads `.roo/rules/01-skills-index.md`
 3. **Code mode**: Finds `tailwind-v4-shadcn` skill
-4. **Code mode**: Runs `roo-commander read tailwind-v4-shadcn`
+4. **Code mode**: Runs `flow-orch read tailwind-v4-shadcn`
 5. **Code mode**: Loads skill, implements with proven patterns
 
 **Benefits**:
-- No Roo Commander needed (direct skill access)
+- No Flow Orchestrator needed (direct skill access)
 - All modes skill-aware (not just orchestrator)
 - Flexible workflow (user chooses when to use orchestrator)
 
@@ -484,7 +484,7 @@ flowchart TB
 
 **CLI Execution**:
 - Roo modes can execute terminal commands (command tool group)
-- Only runs `roo-commander` CLI (no arbitrary commands)
+- Only runs `flow-orchestrator` CLI (no arbitrary commands)
 - CLI reads from `~/.claude/skills/` (user's own directory)
 
 **Skill Content**:
@@ -561,14 +561,14 @@ flowchart TB
 **User Workflow**:
 1. Create skill in `~/.claude/skills/my-custom-skill/`
 2. Follow Claude Code skill format (YAML + markdown)
-3. Run `roo-commander sync-index`
+3. Run `flow-orch sync-index`
 4. Skills index updates automatically
 5. All modes can now access custom skill
 
 **No Code Changes Needed**:
 - CLI auto-discovers new skills
 - Index generation includes all skills in directory
-- Roo Commander routes based on keywords (YAML frontmatter)
+- Flow Orchestrator routes based on keywords (YAML frontmatter)
 
 ### Adding Custom Modes
 
@@ -576,16 +576,16 @@ flowchart TB
 1. Create custom mode in `.roomodes`
 2. Add mode-specific rules in `.roo/rules-{slug}/`
 3. Mode automatically sees skills index (in `.roo/rules/`)
-4. Mode can use `roo-commander` CLI like any other mode
+4. Mode can use `flow-orchestrator` CLI like any other mode
 
-**No Roo Commander Changes Needed**:
+**No Flow Orchestrator Changes Needed**:
 - Custom modes inherit global rules (skills index)
-- Can delegate to Roo Commander for orchestration
+- Can delegate to Flow Orchestrator for orchestration
 - Can use CLI directly for skill loading
 
 ---
 
-## Comparison to Roo Commander v8.1
+## Comparison to Flow Orchestrator v8.1
 
 ### What Changed
 
@@ -665,7 +665,7 @@ Future possibility: Build Roo Code version of project-planning skill
 
 ## Conclusion
 
-Roo Commander v9 bridges Claude Code skills and Roo Code through a simple three-component architecture:
+Flow Orchestrator v9 bridges Claude Code skills and Roo Code through a simple three-component architecture:
 
 1. **CLI** reads skills from filesystem
 2. **Custom instructions** teach all modes about skills
